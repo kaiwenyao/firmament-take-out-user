@@ -164,11 +164,6 @@ const OrderDetail = () => {
           联系电话：{order.phone}
         </div>
         <div style={{ color: "#666" }}>收货地址：{order.address}</div>
-        {order.remark && (
-          <div style={{ color: "#666", marginTop: 8 }}>
-            备注：{order.remark}
-          </div>
-        )}
       </Card>
 
       <Card style={{ margin: 12 }}>

@@ -1,76 +1,87 @@
-# React + TypeScript + Vite
+# 苍穹外卖 - 用户端
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 技术栈
 
-Currently, two official plugins are available:
+### 核心框架
+- **React** 19.2.0 - 用于构建用户界面的 JavaScript 库
+- **TypeScript** ~5.9.3 - JavaScript 的超集，提供类型安全
+- **Vite** ^7.2.4 - 下一代前端构建工具，提供快速的开发体验
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 路由管理
+- **React Router DOM** ^6.28.0 - 用于单页应用的路由管理
 
-## React Compiler
+### UI 组件库
+- **Ant Design Mobile** ^5.37.0 - 移动端 UI 组件库
+- **Ant Design Mobile Icons** ^0.3.0 - 移动端图标库
+- **Radix UI** - 无样式、可访问的 UI 组件基础库
+  - @radix-ui/react-label ^2.1.8
+  - @radix-ui/react-slot ^1.2.4
+  - @radix-ui/react-toast ^1.2.15
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### 样式方案
+- **Tailwind CSS** ^3.4.0 - 实用优先的 CSS 框架
+- **tailwindcss-animate** ^1.0.7 - Tailwind CSS 动画插件
+- **PostCSS** ^8.5.6 - CSS 后处理器
+- **Autoprefixer** ^10.4.23 - 自动添加 CSS 浏览器前缀
 
-Note: This will impact Vite dev & build performances.
+### HTTP 请求
+- **Axios** ^1.7.9 - 基于 Promise 的 HTTP 客户端
 
-## Expanding the ESLint configuration
+### 工具库
+- **class-variance-authority** ^0.7.1 - 用于管理组件变体的工具
+- **clsx** ^2.1.1 - 用于条件性地构造 className 字符串
+- **tailwind-merge** ^3.4.0 - 智能合并 Tailwind CSS 类名
+- **lucide-react** ^0.562.0 - 图标库
+- **next-themes** ^0.4.6 - 主题切换工具
+- **sonner** ^2.0.7 - Toast 通知组件
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 开发工具
+- **ESLint** ^9.39.1 - JavaScript/TypeScript 代码检查工具
+- **TypeScript ESLint** ^8.46.4 - TypeScript 的 ESLint 插件
+- **@vitejs/plugin-react** ^5.1.1 - Vite 的 React 插件
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 演示网站
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**访问地址：** https://firmament-user.kaiwen.dev
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 测试账号
+
+- **账号：** 13333333333
+- **密码：** 123456
+
+## 项目结构
+
+```
+user-front-react/
+├── src/
+│   ├── api/          # API 接口定义
+│   ├── components/   # 公共组件
+│   ├── pages/        # 页面组件
+│   ├── router/       # 路由配置
+│   ├── lib/          # 工具函数
+│   └── assets/       # 静态资源
+├── public/           # 公共静态文件
+└── package.json      # 项目依赖配置
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 开发命令
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# 安装依赖
+npm install
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 启动开发服务器
+npm run dev
+
+# 启动开发服务器（允许外部访问）
+npm run dev-host
+
+# 构建生产版本
+npm run build
+
+# 预览生产构建
+npm run preview
+
+# 代码检查
+npm run lint
 ```
-# firmament-take-out-user

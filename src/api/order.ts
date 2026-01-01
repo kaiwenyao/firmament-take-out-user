@@ -25,7 +25,6 @@ export interface Order {
   checkoutTime: string;
   payMethod: number;
   amount: number;
-  remark: string;
   phone: string;
   address: string;
   userName: string;
@@ -37,7 +36,6 @@ export interface Order {
 export interface SubmitOrderParams {
   addressBookId: string; // 地址ID为string类型
   payMethod: number;
-  remark?: string;
   estimatedDeliveryTime?: string;
   deliveryStatus?: number;
   tablewareNumber?: number;

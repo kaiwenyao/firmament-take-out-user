@@ -90,13 +90,6 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "remark",
-        lazy: async () => {
-          const { default: Remark } = await import("@/pages/Remark");
-          return { Component: Remark };
-        },
-      },
-      {
         path: "*",
         element: <Navigate to="/home" replace />,
       },
