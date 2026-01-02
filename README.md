@@ -13,10 +13,12 @@
 ### UI 组件库
 - **Ant Design Mobile** ^5.37.0 - 移动端 UI 组件库
 - **Ant Design Mobile Icons** ^0.3.0 - 移动端图标库
-- **Radix UI** - 无样式、可访问的 UI 组件基础库
-  - @radix-ui/react-label ^2.1.8
-  - @radix-ui/react-slot ^1.2.4
-  - @radix-ui/react-toast ^1.2.15
+- **shadcn/ui** - 基于 Radix UI 和 Tailwind CSS 的可复用组件系统
+  - 使用的组件：Button, Card, Input, Label, Sonner
+  - 基于 **Radix UI** 无样式、可访问的 UI 组件库
+    - @radix-ui/react-label ^2.1.8 - 标签组件
+    - @radix-ui/react-slot ^1.2.4 - 插槽组件
+    - @radix-ui/react-toast ^1.2.15 - Toast 通知组件
 
 ### 样式方案
 - **Tailwind CSS** ^3.4.0 - 实用优先的 CSS 框架
