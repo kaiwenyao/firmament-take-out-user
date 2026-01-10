@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/firmament-user-nginx
-  CONTAINER_NAME: firmament-user-nginx
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/firmament-user
+  CONTAINER_NAME: firmament-user
 
 jobs:
   build-and-deploy:
