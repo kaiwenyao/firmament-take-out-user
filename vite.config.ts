@@ -6,6 +6,8 @@ import path from 'path'
 export default defineConfig({
   plugins: [
     react({
+      // React 19 原生支持，无需兼容模式
+      // jsxRuntime: 'automatic' 是默认值，已支持 React 19
       // 暂时禁用 React Compiler，排查问题
       // babel: {
       //   plugins: [['babel-plugin-react-compiler']],

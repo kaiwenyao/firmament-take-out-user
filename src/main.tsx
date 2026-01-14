@@ -1,7 +1,22 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { unstableSetRender } from "antd-mobile";
 import "./index.css";
 import App from "./App.tsx";
+
+// React 19 兼容配置：为 antd-mobile 设置自定义渲染方法
+// 由于 React 19 调整了 react-dom 的导出方式，需要使用 unstableSetRender 来适配
+unstableSetRender((node, container) => {
+  // 使用类型断言来扩展 container 类型，添加 _reactRoot 属性
+  const containerWithRoot = container as HTMLElement & { _reactRoot?: ReturnType<typeof createRoot> };
+  containerWithRoot._reactRoot ||= createRoot(container);
+  const root = containerWithRoot._reactRoot;
+  root.render(node);
+  return async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    root.unmount();
+  };
+});
 
 // 捕获并忽略浏览器自动填充覆盖层导致的错误
 window.addEventListener('error', (event) => {
