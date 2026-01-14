@@ -13,9 +13,19 @@
 
 ### 核心框架
 
-* **React** ^19.2.0 - 用于构建用户界面的 JavaScript 库
+* **React** ^19.2.0 - 用于构建用户界面的 JavaScript 库（最新稳定版）
+* **React DOM** ^19.2.0 - React 的 DOM 渲染库
 * **TypeScript** \~5.9.3 - JavaScript 的超集，提供类型安全
 * **Vite** ^7.2.4 - 下一代前端构建工具，提供快速的开发体验
+
+### React 19 兼容性说明
+
+项目使用 React 19.2.0，并通过以下方式确保与 antd-mobile 的兼容性：
+
+* **antd-mobile 兼容配置**：在 `src/main.tsx` 中使用 `unstableSetRender` API 来适配 React 19 的渲染方式
+* **兼容方式**：由于 React 19 调整了 react-dom 的导出方式，antd-mobile v5 需要使用兼容配置才能正常工作
+* **版本要求**：antd-mobile 版本 >= 5.40.0（当前使用 5.42.3）
+* **未来计划**：该兼容方式将在 antd-mobile 的下一个 major 版本中被移除，届时将原生支持 React 19
 
 ### 路由管理
 
@@ -23,7 +33,7 @@
 
 ### UI 组件库
 
-* **Ant Design Mobile** ^5.37.0 - 移动端 UI 组件库
+* **Ant Design Mobile** ^5.42.3 - 移动端 UI 组件库（使用 `unstableSetRender` 兼容 React 19）
 * **Ant Design Mobile Icons** ^0.3.0 - 移动端图标库
 * **shadcn/ui** \- 基于 Radix UI 和 Tailwind CSS 的可复用组件系统
   * 使用的组件：Button, Card, Input, Label, Sonner
@@ -56,7 +66,7 @@
 
 * **ESLint** ^9.39.1 - JavaScript/TypeScript 代码检查工具
 * **TypeScript ESLint** ^8.46.4 - TypeScript 的 ESLint 插件
-* **@vitejs/plugin-react** ^5.1.1 - Vite 的 React 插件
+* **@vitejs/plugin-react** ^5.1.2 - Vite 的 React 插件（支持 React 19）
 
 ## 项目结构
 
