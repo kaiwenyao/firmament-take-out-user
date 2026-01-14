@@ -217,7 +217,7 @@ const Home = () => {
           );
           setCartItems(nextItems);
         }
-      } catch (error: unknown) {
+      } catch {
         // 购物车可能为空，不显示错误
       }
     };
@@ -252,7 +252,7 @@ const Home = () => {
           const nextStatus = typeof res.data === "number" ? res.data : 1;
           setShopStatus(nextStatus);
         }
-      } catch (error: unknown) {
+      } catch {
         // 忽略错误
       }
     };

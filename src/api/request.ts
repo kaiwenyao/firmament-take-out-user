@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { triggerNavigation } from "@/lib/navigation";
 
 // 通用 API 响应类型
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   code: number;
   msg?: string;
   data?: T;

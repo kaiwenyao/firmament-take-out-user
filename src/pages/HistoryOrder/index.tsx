@@ -47,9 +47,10 @@ const HistoryOrder = () => {
       }
     };
     fetchOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reqData]);
 
-  const loadMore = async (_isRetry: boolean) => {
+  const loadMore = async () => {
     if (hasMore && !loading) {
       setReqData((prev) => ({ ...prev, page: prev.page + 1 }));
     }
