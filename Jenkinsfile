@@ -1,8 +1,57 @@
 pipeline {
-    agent any
-    
-    tools {
-        nodejs 'nodejs-24.11.1' // 使用 Jenkins 中配置的 Node.js 工具
+    agent {
+        kubernetes {
+            // 指向你在 Jenkins 系统管理里配置的云名称，通常默认为 "kubernetes"
+            cloud 'kubernetes' 
+            
+            // Pod Template 配置
+            yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    # 对应 Jenkins 中配置的标签列表
+    jenkins/label: firmament-build
+spec:
+  containers:
+    # -------------------------------------------------------
+    # 1. Node.js 容器配置 (用于前端构建)
+    # -------------------------------------------------------
+    - name: nodejs
+      image: node:24-alpine
+      command:
+        - sleep
+      args:
+        - "9999999"
+      tty: true
+      workingDir: /home/jenkins/agent
+
+    # -------------------------------------------------------
+    # 2. Docker 容器配置 (用于构建和推送镜像)
+    # -------------------------------------------------------
+    - name: docker
+      image: docker:latest
+      command:
+        - sleep
+      args:
+        - "9999999"
+      tty: true
+      workingDir: /home/jenkins/agent
+      volumeMounts:
+        # 挂载宿主机 Docker Socket
+        - mountPath: /var/run/docker.sock
+          name: docker-sock
+          
+  # -------------------------------------------------------
+  # 3. 卷定义
+  # -------------------------------------------------------
+  volumes:
+    # HostPath: 挂载宿主机 Docker Socket
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+'''
+        }
     }
     
     environment {
@@ -22,16 +71,20 @@ pipeline {
         
         stage('2. 代码检查') {
             steps {
-                echo '正在运行代码检查...'
-                sh 'npm ci'
-                sh 'npm run lint'
+                container('nodejs') {
+                    echo '正在运行代码检查...'
+                    sh 'npm ci'
+                    sh 'npm run lint'
+                }
             }
         }
         
         stage('3. 构建项目') {
             steps {
-                echo '构建前端项目...'
-                sh 'npm run build'
+                container('nodejs') {
+                    echo '构建前端项目...'
+                    sh 'npm run build'
+                }
             }
         }
         
@@ -41,13 +94,15 @@ pipeline {
                 not { changeRequest() }
             }
             steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh '''
-                            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                            docker build -t ${DOCKER_USER}/firmament-user:latest -f Dockerfile .
-                            docker push ${DOCKER_USER}/firmament-user:latest
-                        '''
+                container('docker') {
+                    script {
+                        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                            sh '''
+                                echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                                docker build -t ${DOCKER_USER}/firmament-user:latest -f Dockerfile .
+                                docker push ${DOCKER_USER}/firmament-user:latest
+                            '''
+                        }
                     }
                 }
             }
@@ -62,73 +117,77 @@ pipeline {
                 }
             }
             steps {
-                echo '🚀 生产环境部署启动...'
-                script {
-                    withCredentials([
-                        sshUserPrivateKey(
-                            credentialsId: 'server-ssh-key',
-                            keyFileVariable: 'SSH_KEY',
-                            usernameVariable: 'SSH_USER'
-                        ),
-                        string(credentialsId: 'server-host', variable: 'SERVER_HOST'),
-                        string(credentialsId: 'docker-username', variable: 'DOCKER_USERNAME'),
-                        string(credentialsId: 'firmament-server-host', variable: 'FIRMAMENT_SERVER_HOST'),
-                        string(credentialsId: 'firmament-server-port', variable: 'FIRMAMENT_SERVER_PORT'),
-                        usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')
-                    ]) {
-                        def containerName = env.CONTAINER_NAME
-                        // 生成部署脚本（使用单引号避免 Groovy 插值敏感变量，脚本中从环境变量读取）
-                        def deployScript = '''#!/bin/bash
-                        set -e
-                        
-                        echo "正在登录 Docker Hub..."
-                        echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
-                        
-                        echo "正在拉取镜像..."
-                        docker pull $DOCKER_USERNAME/firmament-user:latest
-                        
-                        echo "清理旧容器..."
-                        docker stop ''' + containerName + ''' || true
-                        docker rm ''' + containerName + ''' || true
-                        
-                        echo "启动新容器..."
-                        docker run -d \\
-                            --name ''' + containerName + ''' \\
-                            --restart unless-stopped \\
-                            --network firmament_app-network \\
-                            -e FIRMAMENT_SERVER_HOST="$FIRMAMENT_SERVER_HOST" \\
-                            -e FIRMAMENT_SERVER_PORT="$FIRMAMENT_SERVER_PORT" \\
-                            $DOCKER_USERNAME/firmament-user:latest
-                        
-                        # 连接到 nginx-proxy-manager 网络（如果存在）
-                        docker network connect nginx-proxy-manager_default ''' + containerName + ''' || true
-                        
-                        echo "部署完成！"
-                        '''
-                        
-                        writeFile file: 'deploy.sh', text: deployScript
-                        
-                        // 执行传输和运行（使用单引号避免 Groovy 插值敏感变量）
-                        // Shell 会从环境变量读取，Jenkins 可以更好地进行日志脱敏
-                        sh '''
-                            mkdir -p ~/.ssh
-                            cp "$SSH_KEY" ~/.ssh/deploy_key
-                            chmod 600 ~/.ssh/deploy_key
+                container('nodejs') {
+                    echo '🚀 生产环境部署启动...'
+                    script {
+                        withCredentials([
+                            sshUserPrivateKey(
+                                credentialsId: 'server-ssh-key',
+                                keyFileVariable: 'SSH_KEY',
+                                usernameVariable: 'SSH_USER'
+                            ),
+                            string(credentialsId: 'server-host', variable: 'SERVER_HOST'),
+                            string(credentialsId: 'docker-username', variable: 'DOCKER_USERNAME'),
+                            string(credentialsId: 'firmament-server-host', variable: 'FIRMAMENT_SERVER_HOST'),
+                            string(credentialsId: 'firmament-server-port', variable: 'FIRMAMENT_SERVER_PORT'),
+                            usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')
+                        ]) {
+                            def containerName = env.CONTAINER_NAME
+                            // 生成部署脚本（使用单引号避免 Groovy 插值敏感变量，脚本中从环境变量读取）
+                            def deployScript = '''#!/bin/bash
+                            set -e
                             
-                            echo "正在上传部署脚本到远程服务器..."
-                            scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no deploy.sh $SSH_USER@$SERVER_HOST:/tmp/deploy.sh
+                            echo "正在登录 Docker Hub..."
+                            echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_USER" --password-stdin
                             
-                            echo "正在执行远程部署..."
-                            ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $SSH_USER@$SERVER_HOST \
-                                "DOCKER_HUB_PASS=\"$DOCKER_HUB_PASS\" \
-                                 DOCKER_HUB_USER=\"$DOCKER_HUB_USER\" \
-                                 DOCKER_USERNAME=\"$DOCKER_USERNAME\" \
-                                 FIRMAMENT_SERVER_HOST=\"$FIRMAMENT_SERVER_HOST\" \
-                                 FIRMAMENT_SERVER_PORT=\"$FIRMAMENT_SERVER_PORT\" \
-                                 chmod +x /tmp/deploy.sh && bash /tmp/deploy.sh"
+                            echo "正在拉取镜像..."
+                            docker pull $DOCKER_USERNAME/firmament-user:latest
                             
-                            rm -f ~/.ssh/deploy_key deploy.sh
-                        '''
+                            echo "清理旧容器..."
+                            docker stop ''' + containerName + ''' || true
+                            docker rm ''' + containerName + ''' || true
+                            
+                            echo "启动新容器..."
+                            docker run -d \\
+                                --name ''' + containerName + ''' \\
+                                --restart unless-stopped \\
+                                --network firmament_app-network \\
+                                -e FIRMAMENT_SERVER_HOST="$FIRMAMENT_SERVER_HOST" \\
+                                -e FIRMAMENT_SERVER_PORT="$FIRMAMENT_SERVER_PORT" \\
+                                $DOCKER_USERNAME/firmament-user:latest
+                            
+                            # 连接到 nginx-proxy-manager 网络（如果存在）
+                            docker network connect nginx-proxy-manager_default ''' + containerName + ''' || true
+                            
+                            echo "部署完成！"
+                            '''
+                            
+                            writeFile file: 'deploy.sh', text: deployScript
+                            
+                            // 执行传输和运行（使用单引号避免 Groovy 插值敏感变量）
+                            // Shell 会从环境变量读取，Jenkins 可以更好地进行日志脱敏
+                            // 注意：nodejs:24-alpine 需要安装 openssh-client 才能使用 ssh/scp
+                            sh '''
+                                apk add --no-cache openssh-client || true
+                                mkdir -p ~/.ssh
+                                cp "$SSH_KEY" ~/.ssh/deploy_key
+                                chmod 600 ~/.ssh/deploy_key
+                                
+                                echo "正在上传部署脚本到远程服务器..."
+                                scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no deploy.sh $SSH_USER@$SERVER_HOST:/tmp/deploy.sh
+                                
+                                echo "正在执行远程部署..."
+                                ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no $SSH_USER@$SERVER_HOST \
+                                    "DOCKER_HUB_PASS=\"$DOCKER_HUB_PASS\" \
+                                     DOCKER_HUB_USER=\"$DOCKER_HUB_USER\" \
+                                     DOCKER_USERNAME=\"$DOCKER_USERNAME\" \
+                                     FIRMAMENT_SERVER_HOST=\"$FIRMAMENT_SERVER_HOST\" \
+                                     FIRMAMENT_SERVER_PORT=\"$FIRMAMENT_SERVER_PORT\" \
+                                     chmod +x /tmp/deploy.sh && bash /tmp/deploy.sh"
+                                
+                                rm -f ~/.ssh/deploy_key deploy.sh
+                            '''
+                        }
                     }
                 }
             }
