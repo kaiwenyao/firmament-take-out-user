@@ -119,6 +119,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* 排除 antd-mobile 组件，避免样式冲突 */
+  .adm-button,
+  .adm-button * {
+    border-color: inherit;
+  }
 }
 
 /* 防止浏览器自动填充覆盖层导致的错误 */
@@ -136,4 +141,82 @@ input[type="tel"],
 input[type="text"] {
   position: relative;
   z-index: 1;
+}
+
+/* 修复 antd-mobile 按钮文字不显示的问题 */
+/* 重置 Tailwind 全局样式对按钮的影响 */
+.adm-button {
+  color: unset !important;
+  font-size: 14px !important;
+}
+
+/* 确保按钮文字容器可见 */
+.adm-button-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: unset !important;
+}
+
+/* 确保按钮内所有内容可见 */
+.adm-button > * {
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: unset !important;
+}
+
+/* 强制所有按钮使用实心填充（有背景色），而不是透明或轮廓 */
+/* 默认按钮使用主色填充 */
+.adm-button {
+  background-color: var(--adm-color-primary, #1677ff) !important;
+  border-color: var(--adm-color-primary, #1677ff) !important;
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+.adm-button .adm-button-text {
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+/* 修复轮廓和透明按钮 - 改为实心填充 */
+.adm-button-fill-outline,
+.adm-button-fill-none {
+  background-color: var(--adm-color-primary, #1677ff) !important;
+  border-color: var(--adm-color-primary, #1677ff) !important;
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+.adm-button-fill-outline .adm-button-text,
+.adm-button-fill-none .adm-button-text {
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+/* 修复实心填充按钮的文字颜色 */
+.adm-button-fill-solid {
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+.adm-button-fill-solid .adm-button-text {
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+/* 修复主色按钮 - 确保有背景色填充 */
+.adm-button-color-primary {
+  background-color: var(--adm-color-primary, #1677ff) !important;
+  border-color: var(--adm-color-primary, #1677ff) !important;
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+.adm-button-color-primary .adm-button-text {
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+/* 修复危险色按钮 - 确保有背景色填充 */
+.adm-button-color-danger {
+  background-color: var(--adm-color-danger, #ff4d4f) !important;
+  border-color: var(--adm-color-danger, #ff4d4f) !important;
+  color: var(--adm-color-white, #ffffff) !important;
+}
+
+.adm-button-color-danger .adm-button-text {
+  color: var(--adm-color-white, #ffffff) !important;
 }
