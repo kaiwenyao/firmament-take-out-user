@@ -18,23 +18,23 @@ const Success = () => {
           padding: "12px 16px",
         }}
       >
-        支付成功
+        Payment Successful
       </NavBar>
 
       <Result
         status="success"
-        title="支付成功"
-        description="您的订单已支付成功，我们会尽快为您配送"
+        title="Payment Successful"
+        description="Your order has been paid. We will deliver it as soon as possible."
       />
 
       <Card style={{ margin: 12 }}>
         {orderNumber && (
           <div style={{ color: "#666", marginBottom: 8 }}>
-            订单号：{orderNumber}
+            Order #: {orderNumber}
           </div>
         )}
         <div style={{ color: "#666" }}>
-          感谢您的购买，祝您用餐愉快！
+          Thank you for your purchase. Enjoy your meal!
         </div>
       </Card>
 
@@ -45,7 +45,7 @@ const Success = () => {
           onClick={() => navigate("/home")}
           style={{ marginBottom: 12 }}
         >
-          返回首页
+          Back to Home
         </Button>
         <Button
           block
@@ -56,7 +56,7 @@ const Success = () => {
           }}
           disabled={!orderNumber}
         >
-          查看订单
+          View Order
         </Button>
       </div>
     </div>

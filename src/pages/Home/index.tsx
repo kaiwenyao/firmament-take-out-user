@@ -110,7 +110,7 @@ const Home = () => {
         allCategories.sort((a, b) => a.sort - b.sort);
         setCategories(allCategories);
       } catch (error: unknown) {
-        toast.error(getErrorMessage(error, "加载分类失败"));
+        toast.error(getErrorMessage(error, "Failed to load categories"));
       } finally {
         setLoadingCategories(false);
       }
@@ -142,7 +142,7 @@ const Home = () => {
             setDishes(nextDishes);
           }
         } catch (error: unknown) {
-          toast.error(getErrorMessage(error, "加载菜品失败"));
+          toast.error(getErrorMessage(error, "Failed to load dishes"));
         } finally {
           if (dishRequestIdRef.current === requestId) {
             setLoadingDishes(false);
@@ -183,7 +183,7 @@ const Home = () => {
             setSetmeals(nextSetmeals);
           }
         } catch (error: unknown) {
-          toast.error(getErrorMessage(error, "加载套餐失败"));
+          toast.error(getErrorMessage(error, "Failed to load set meals"));
         } finally {
           if (setmealRequestIdRef.current === requestId) {
             setLoadingSetmeals(false);
@@ -406,7 +406,7 @@ const Home = () => {
     dishFlavor?: string;
   }) => {
     if (!isShopOpen) {
-      toast.error("店铺已打烊，暂不支持加购");
+      toast.error("Store is closed, cannot add to cart");
       return;
     }
     if (!hasToken) {
@@ -415,10 +415,10 @@ const Home = () => {
     }
     try {
       await addShoppingCartAPI(buildCartPayload(params));
-      toast.success("已加入购物车");
+      toast.success("Added to cart");
       reloadCart();
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "添加失败"));
+      toast.error(getErrorMessage(error, "Failed to add"));
     }
   };
 
@@ -433,10 +433,10 @@ const Home = () => {
     }
     try {
       await subShoppingCartAPI(buildCartPayload(params));
-      toast.success("已减少");
+      toast.success("Removed");
       reloadCart();
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "操作失败"));
+      toast.error(getErrorMessage(error, "Operation failed"));
     }
   };
 
@@ -447,13 +447,13 @@ const Home = () => {
     }
     try {
       await delShoppingCartAPI();
-      toast.success("已清空购物车");
+      toast.success("Cart cleared");
       setCartItems([]);
       setDishes((prev) => updateDishesWithCart(prev, []));
       setSetmeals((prev) => updateSetmealsWithCart(prev, []));
       setCartVisible(false);
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "清空失败"));
+      toast.error(getErrorMessage(error, "Failed to clear cart"));
     }
   };
 
@@ -463,11 +463,11 @@ const Home = () => {
       return;
     }
     if (!isShopOpen) {
-      toast.error("店铺已打烊，暂不支持下单");
+      toast.error("Store is closed, cannot place order");
       return;
     }
     if (cartItems.length === 0) {
-      toast.error("购物车为空");
+      toast.error("Your cart is empty");
       return;
     }
     navigate("/order");
@@ -497,23 +497,23 @@ const Home = () => {
           padding: "12px 16px",
         }}
       >
-        苍穹外卖
+        Firmament Takeout
       </NavBar>
 
-      {/* 店铺信息 */}
+      {/* Shop info */}
       <Card>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div>
             <div style={{ fontSize: 18, fontWeight: "bold" }}>
-              苍穹外卖
+              Firmament Takeout
               {shopStatus === 1 ? (
-                <span style={{ color: "#00b96b", marginLeft: 8 }}>营业中</span>
+                <span style={{ color: "#00b96b", marginLeft: 8 }}>Open</span>
               ) : (
-                <span style={{ color: "#999", marginLeft: 8 }}>休息中</span>
+                <span style={{ color: "#999", marginLeft: 8 }}>Closed</span>
               )}
             </div>
             <div style={{ color: "#666", fontSize: 12, marginTop: 4 }}>
-              北京市朝阳区新街大道一号楼8层
+              8F, Building 1, Xinjie Avenue, Chaoyang, Beijing
             </div>
           </div>
         </div>
@@ -572,7 +572,7 @@ const Home = () => {
               ))}
             </div>
           ) : dishes.length === 0 && setmeals.length === 0 ? (
-            <Empty description="该分类下暂无商品" />
+            <Empty description="No items in this category" />
           ) : (
             <>
               {/* 菜品列表 */}
@@ -603,7 +603,7 @@ const Home = () => {
                       {dish.description || dish.name}
                     </div>
                     <div style={{ color: "#999", fontSize: 12 }}>
-                      月销量0
+                      Monthly sales: 0
                     </div>
                     <div
                       style={{
@@ -626,7 +626,7 @@ const Home = () => {
                             setDetailVisible(true);
                           }}
                         >
-                          选择规格
+                          Select Options
                         </Button>
                       ) : (
                         <div style={{ display: "flex", alignItems: "center" }}>
@@ -696,7 +696,7 @@ const Home = () => {
                             fontSize: 10,
                           }}
                         >
-                          套餐
+                          Set Meal
                         </span>
                       </div>
                       <div
@@ -705,7 +705,7 @@ const Home = () => {
                         {setmeal.description || setmeal.name}
                       </div>
                       <div style={{ color: "#999", fontSize: 12 }}>
-                        月销量0
+                        Monthly sales: 0
                       </div>
                       <div
                         style={{
@@ -804,7 +804,7 @@ const Home = () => {
           onClick={handleGoOrder}
           disabled={totalCount === 0 || !isShopOpen}
         >
-          去结算
+          Checkout
         </Button>
       </div>
 
@@ -822,13 +822,13 @@ const Home = () => {
               marginBottom: 16,
             }}
           >
-            <div style={{ fontWeight: "bold" }}>购物车</div>
+            <div style={{ fontWeight: "bold" }}>Cart</div>
             <Button size="small" onClick={handleClearCart}>
-              清空
+              Clear
             </Button>
           </div>
           {cartItems.length === 0 ? (
-            <Empty description="购物车为空" />
+            <Empty description="Your cart is empty" />
           ) : (
             <div>
               {cartItems.map((item) => (
@@ -921,7 +921,7 @@ const Home = () => {
               selectedDish.flavors.length > 0 && (
                 <div style={{ marginBottom: 16 }}>
                   <div style={{ fontWeight: "bold", marginBottom: 8 }}>
-                    选择规格
+                    Select Options
                   </div>
                   {selectedDish.flavors.map((flavor) => {
                     const values = normalizeFlavorValues(flavor.value);
@@ -977,7 +977,7 @@ const Home = () => {
                   setDetailVisible(false);
                 }}
               >
-                加入购物车
+                Add to Cart
               </Button>
             </div>
           </div>
@@ -990,16 +990,16 @@ const Home = () => {
         bodyStyle={{ padding: 16 }}
       >
         <div style={{ textAlign: "center" }}>
-          <div style={{ fontWeight: "bold", marginBottom: 8 }}>请先登录</div>
+          <div style={{ fontWeight: "bold", marginBottom: 8 }}>Please sign in first</div>
           <div style={{ color: "#666", marginBottom: 16 }}>
-            登录后即可加入购物车并下单
+            Sign in to add items to cart and place orders
           </div>
           <div style={{ display: "flex", gap: 12 }}>
             <Button block onClick={() => setLoginPromptVisible(false)}>
-              取消
+              Cancel
             </Button>
             <Button block color="primary" onClick={handleLoginRedirect}>
-              去登录
+              Sign In
             </Button>
           </div>
         </div>

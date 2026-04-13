@@ -32,7 +32,7 @@ const AddressPage = () => {
           setAddresses(res.data || []);
         }
       } catch (error: unknown) {
-        toast.error(getErrorMessage(error, "加载地址失败"));
+        toast.error(getErrorMessage(error, "Failed to load addresses"));
       }
     };
     fetchAddresses();
@@ -51,10 +51,10 @@ const AddressPage = () => {
     setDeleteDialogVisible(false);
     try {
       await deleteAddressAPI(deleteId);
-      toast.success("删除成功");
+      toast.success("Deleted successfully");
       reloadData();
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "删除失败"));
+      toast.error(getErrorMessage(error, "Failed to delete"));
     }
   };
 
@@ -66,10 +66,10 @@ const AddressPage = () => {
   const handleSetDefault = async (id: string) => {
     try {
       await setDefaultAddressAPI(id);
-      toast.success("设置成功");
+      toast.success("Updated successfully");
       reloadData();
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "设置失败"));
+      toast.error(getErrorMessage(error, "Failed to update"));
     }
   };
 
@@ -85,7 +85,7 @@ const AddressPage = () => {
           padding: "12px 16px",
         }}
       >
-        地址管理
+        Manage Addresses
       </NavBar>
 
       {addresses.length === 0 ? (
@@ -100,7 +100,7 @@ const AddressPage = () => {
           }}
         >
           <div style={{ fontSize: 48, marginBottom: 16 }}>📍</div>
-          <div>暂无地址，快去添加吧</div>
+          <div>No addresses yet, add one now</div>
         </div>
       ) : (
         <List>
@@ -113,14 +113,14 @@ const AddressPage = () => {
                     size="small"
                     onClick={() => navigate(`/address/edit/${address.id}`)}
                   >
-                    编辑
+                    Edit
                   </Button>
                   <Button
                     size="small"
                     color="danger"
                     onClick={() => handleDeleteClick(address.id)}
                   >
-                    删除
+                    Delete
                   </Button>
                 </div>
               }
@@ -140,7 +140,7 @@ const AddressPage = () => {
                         fontWeight: "normal",
                       }}
                     >
-                      默认
+                      Default
                     </span>
                   )}
                 </div>
@@ -153,7 +153,7 @@ const AddressPage = () => {
                     style={{ marginTop: 4 }}
                     onClick={() => handleSetDefault(address.id)}
                   >
-                    设为默认
+                    Set as Default
                   </Button>
                 )}
               </div>
@@ -186,24 +186,24 @@ const AddressPage = () => {
             fontWeight: 500,
           }}
         >
-          新增地址
+          Add Address
         </Button>
       </div>
 
       <Dialog
         visible={deleteDialogVisible}
-        content="确定要删除这个地址吗？"
+        content="Are you sure you want to delete this address?"
         closeOnAction
         onClose={handleDeleteCancel}
         actions={[
           {
             key: "cancel",
-            text: "取消",
+            text: "Cancel",
             onClick: handleDeleteCancel,
           },
           {
             key: "confirm",
-            text: "删除",
+            text: "Delete",
             bold: true,
             danger: true,
             onClick: handleDeleteConfirm,

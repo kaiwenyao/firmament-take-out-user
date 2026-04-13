@@ -41,7 +41,7 @@ const HistoryOrder = () => {
           setHasLoaded(true);
         }
       } catch (error: unknown) {
-        toast.error(getErrorMessage(error, "加载订单失败"));
+        toast.error(getErrorMessage(error, "Failed to load orders"));
       } finally {
         setLoading(false);
       }
@@ -60,33 +60,33 @@ const HistoryOrder = () => {
     try {
       await delShoppingCartAPI();
       await repetitionOrderAPI(orderNumber);
-      toast.success("已加入购物车");
+      toast.success("Added to cart");
       navigate("/home");
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "操作失败"));
+      toast.error(getErrorMessage(error, "Operation failed"));
     }
   };
 
   const handleReminder = async (orderNumber: string) => {
     try {
       await reminderOrderAPI(orderNumber);
-      toast.success("催单成功");
+      toast.success("Rush order sent");
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "催单失败"));
+      toast.error(getErrorMessage(error, "Failed to rush order"));
     }
   };
 
   const getStatusText = (status: number) => {
     const statusMap: Record<number, string> = {
-      1: "待付款",
-      2: "待接单",
-      3: "已接单",
-      4: "派送中",
-      5: "已完成",
-      6: "已取消",
-      7: "退款",
+      1: "Pending Payment",
+      2: "Awaiting Acceptance",
+      3: "Accepted",
+      4: "In Delivery",
+      5: "Completed",
+      6: "Cancelled",
+      7: "Refunded",
     };
-    return statusMap[status] || "未知";
+    return statusMap[status] || "Unknown";
   };
 
   const orderCardBackgrounds = ["#f6f7f9", "#eef2f5"];
@@ -103,7 +103,7 @@ const HistoryOrder = () => {
           padding: "12px 16px",
         }}
       >
-        历史订单
+        Order History
       </NavBar>
 
       {!hasLoaded && loading ? (
@@ -114,7 +114,7 @@ const HistoryOrder = () => {
       ) : orders.length === 0 ? (
         <Card style={{ margin: 12 }}>
           <div style={{ textAlign: "center", color: "#999", padding: 40 }}>
-            暂无订单
+            No orders yet
           </div>
         </Card>
       ) : (
@@ -135,7 +135,7 @@ const HistoryOrder = () => {
                   marginBottom: 8,
                 }}
               >
-                <div style={{ fontWeight: "bold" }}>订单号：{order.number}</div>
+                <div style={{ fontWeight: "bold" }}>Order #: {order.number}</div>
                 <div style={{ color: "#ff6b35", fontWeight: "bold" }}>
                   {getStatusText(order.status)}
                 </div>
@@ -161,7 +161,7 @@ const HistoryOrder = () => {
                       color="danger"
                       onClick={() => navigate(`/pay?orderNumber=${order.number}`)}
                     >
-                      去支付
+                      Pay Now
                     </Button>
                   )}
                   {order.status === 5 && (
@@ -169,7 +169,7 @@ const HistoryOrder = () => {
                       size="small"
                       onClick={() => handleOneMoreOrder(order.number)}
                     >
-                      再来一单
+                      Reorder
                     </Button>
                   )}
                   {order.status === 2 && (
@@ -177,7 +177,7 @@ const HistoryOrder = () => {
                       size="small"
                       onClick={() => handleReminder(order.number)}
                     >
-                      催单
+                      Rush Order
                     </Button>
                   )}
                   <Button
@@ -185,7 +185,7 @@ const HistoryOrder = () => {
                     color="primary"
                     onClick={() => navigate(`/order/detail/${order.number}`)}
                   >
-                    查看详情
+                    View Details
                   </Button>
                 </div>
               </div>

@@ -31,13 +31,13 @@ const Login = () => {
         // 保存 token 和 userId
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", res.data.id);
-        toast.success("登录成功");
+        toast.success("Login successful");
         navigate("/home", { replace: true });
       } else {
-        toast.error(res?.msg || "登录失败");
+        toast.error(res?.msg || "Login failed");
       }
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "登录失败"));
+      toast.error(getErrorMessage(error, "Login failed"));
     } finally {
       setLoading(false);
     }
@@ -83,7 +83,7 @@ const Login = () => {
             textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
           }}
         >
-          苍穹外卖
+          Firmament Takeout
         </div>
         <div
           style={{
@@ -92,7 +92,7 @@ const Login = () => {
             color: "rgba(255, 255, 255, 0.9)",
           }}
         >
-          美味送到家
+          Delicious food delivered to your door
         </div>
       </div>
 
@@ -116,7 +116,7 @@ const Login = () => {
             marginBottom: 8,
           }}
         >
-          欢迎登录
+          Welcome Back
         </div>
         <div
           style={{
@@ -125,7 +125,7 @@ const Login = () => {
             marginBottom: 32,
           }}
         >
-          请输入您的手机号和密码
+          Please enter your phone number and password
         </div>
 
         <Form
@@ -146,20 +146,20 @@ const Login = () => {
                 marginTop: 16,
               }}
             >
-              登录
+              Sign In
             </Button>
           }
         >
           <Form.Item
             name="phone"
-            label="手机号"
+            label="Phone"
             rules={[
-              { required: true, message: "请输入手机号" },
-              { pattern: /^1[3-9]\d{9}$/, message: "请输入正确的手机号" },
+              { required: true, message: "Please enter your phone number" },
+              { pattern: /^1[3-9]\d{9}$/, message: "Please enter a valid phone number" },
             ]}
           >
             <Input
-              placeholder="请输入手机号"
+              placeholder="Enter your phone number"
               clearable
               type="tel"
               maxLength={11}
@@ -171,15 +171,15 @@ const Login = () => {
 
           <Form.Item
             name="password"
-            label="密码"
+            label="Password"
             rules={[
-              { required: true, message: "请输入密码" },
-              { min: 6, message: "密码至少6位" },
+              { required: true, message: "Please enter your password" },
+              { min: 6, message: "Password must be at least 6 characters" },
             ]}
           >
             <div style={{ display: "flex", alignItems: "center" }}>
               <Input
-                placeholder="请输入密码"
+                placeholder="Enter your password"
                 clearable
                 type={passwordVisible ? "text" : "password"}
                 style={{
@@ -221,7 +221,7 @@ const Login = () => {
             color: "#ff6b35",
           }}
         >
-          游客浏览
+          Browse as Guest
         </Button>
       </div>
 
@@ -236,8 +236,8 @@ const Login = () => {
           fontSize: 12,
         }}
       >
-        <div>登录即表示同意《用户协议》和《隐私政策》</div>
-        <div style={{ marginTop: 8 }}>© 2024 苍穹外卖</div>
+        <div>By signing in, you agree to our Terms of Service and Privacy Policy</div>
+        <div style={{ marginTop: 8 }}>© 2024 Firmament Takeout</div>
       </div>
     </div>
   );

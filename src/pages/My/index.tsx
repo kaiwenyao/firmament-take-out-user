@@ -53,13 +53,13 @@ const My = () => {
         if (res && res.code === 1 && res.data) {
           setUserInfo(res.data);
         } else {
-          toast.error(res?.msg || "获取用户信息失败");
+          toast.error(res?.msg || "Failed to load user info");
           setUserInfo(null);
         }
       } catch (error: unknown) {
-        const errorMessage = getErrorMessage(error, "获取用户信息失败");
+        const errorMessage = getErrorMessage(error, "Failed to load user info");
         // 如果是401错误，响应拦截器已经处理了跳转，这里不需要额外处理
-        if (!errorMessage.includes("登录")) {
+        if (!errorMessage.includes("sign in")) {
           toast.error(errorMessage);
         }
         setUserInfo(null);
@@ -88,7 +88,7 @@ const My = () => {
           setHasLoaded(true);
         }
       } catch (error: unknown) {
-        toast.error(getErrorMessage(error, "加载订单失败"));
+        toast.error(getErrorMessage(error, "Failed to load orders"));
       } finally {
         setLoading(false);
       }
@@ -109,40 +109,40 @@ const My = () => {
       await delShoppingCartAPI();
       // 再来一单
       await repetitionOrderAPI(orderNumber);
-      toast.success("已加入购物车");
+      toast.success("Added to cart");
       navigate("/home");
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "操作失败"));
+      toast.error(getErrorMessage(error, "Operation failed"));
     }
   };
 
   const handleReminder = async (orderNumber: string) => {
     try {
       await reminderOrderAPI(orderNumber);
-      toast.success("催单成功");
+      toast.success("Rush order sent");
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "催单失败"));
+      toast.error(getErrorMessage(error, "Failed to rush order"));
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
-    toast.success("已退出登录");
+    toast.success("Signed out");
     navigate("/login", { replace: true });
   };
 
   const getStatusText = (status: number) => {
     const statusMap: Record<number, string> = {
-      1: "待付款",
-      2: "待接单",
-      3: "已接单",
-      4: "派送中",
-      5: "已完成",
-      6: "已取消",
-      7: "退款",
+      1: "Pending Payment",
+      2: "Awaiting Acceptance",
+      3: "Accepted",
+      4: "In Delivery",
+      5: "Completed",
+      6: "Cancelled",
+      7: "Refunded",
     };
-    return statusMap[status] || "未知";
+    return statusMap[status] || "Unknown";
   };
 
   const getStatusColor = (status: number) => {
@@ -170,7 +170,7 @@ const My = () => {
           padding: "12px 16px",
         }}
       >
-        我的
+        Profile
       </NavBar>
 
       {/* 用户信息卡片 */}
@@ -191,10 +191,10 @@ const My = () => {
             />
             <div>
               <div style={{ fontWeight: "bold", fontSize: 16 }}>
-                {userInfo?.name || "用户"}
+                {userInfo?.name || "User"}
               </div>
               <div style={{ color: "#999", fontSize: 12, marginTop: 4 }}>
-                {userInfo?.phone ? maskPhone(userInfo.phone) : "未绑定手机号"}
+                {userInfo?.phone ? maskPhone(userInfo.phone) : "No phone number bound"}
               </div>
             </div>
           </div>
@@ -208,27 +208,27 @@ const My = () => {
           onClick={() => navigate("/address")}
           prefix={<span style={{ fontSize: 20 }}>📍</span>}
         >
-          地址管理
+          Manage Addresses
         </List.Item>
         <List.Item
           arrow
           onClick={() => navigate("/history-order")}
           prefix={<span style={{ fontSize: 20 }}>📋</span>}
         >
-          历史订单
+          Order History
         </List.Item>
         <List.Item
           onClick={handleLogout}
           prefix={<span style={{ fontSize: 20 }}>🚪</span>}
         >
-          退出登录
+          Sign Out
         </List.Item>
       </List>
 
       {/* 最近订单 */}
       <div style={{ padding: "0 12px 20px" }}>
         <div style={{ fontWeight: "bold", marginBottom: 12, fontSize: 16 }}>
-          最近订单
+          Recent Orders
         </div>
         {!hasLoaded && loading ? (
           <Card>
@@ -238,7 +238,7 @@ const My = () => {
         ) : orders.length === 0 ? (
           <Card>
             <div style={{ textAlign: "center", color: "#999", padding: 40 }}>
-              暂无订单
+              No orders yet
             </div>
           </Card>
         ) : (
@@ -257,7 +257,7 @@ const My = () => {
                   }}
                 >
                   <div style={{ fontWeight: "bold", fontSize: 14 }}>
-                    订单号：{order.number}
+                    Order #: {order.number}
                   </div>
                   <div
                     style={{
@@ -293,7 +293,7 @@ const My = () => {
                           navigate(`/pay?orderNumber=${order.number}`);
                         }}
                       >
-                        去支付
+                        Pay Now
                       </Button>
                     )}
                     {order.status === 5 && (
@@ -304,7 +304,7 @@ const My = () => {
                           handleOneMoreOrder(order.number);
                         }}
                       >
-                        再来一单
+                        Reorder
                       </Button>
                     )}
                     {order.status === 2 && (
@@ -315,7 +315,7 @@ const My = () => {
                           handleReminder(order.number);
                         }}
                       >
-                        催单
+                        Rush Order
                       </Button>
                     )}
                     <Button
@@ -326,7 +326,7 @@ const My = () => {
                         navigate(`/order/detail/${order.number}`);
                       }}
                     >
-                      查看详情
+                      View Details
                     </Button>
                   </div>
                 </div>

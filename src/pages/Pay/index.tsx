@@ -25,7 +25,7 @@ const Pay = () => {
   useEffect(() => {
     const fetchOrderDetail = async () => {
       if (!orderNumber) {
-        toast.error("订单信息不存在");
+        toast.error("Order not found");
         navigate(-1);
         return;
       }
@@ -39,11 +39,11 @@ const Pay = () => {
             setOrderNumber(res.data.number);
           }
         } else {
-          toast.error("订单不存在");
+          toast.error("Order does not exist");
           navigate(-1);
         }
       } catch (error: unknown) {
-        toast.error(getErrorMessage(error, "加载订单失败"));
+        toast.error(getErrorMessage(error, "Failed to load order"));
         navigate(-1);
       } finally {
         setOrderLoading(false);
@@ -72,7 +72,7 @@ const Pay = () => {
 
   const handlePay = async () => {
     if (!orderNumber) {
-      toast.error("订单号不存在");
+      toast.error("Order number not found");
       return;
     }
 
@@ -83,13 +83,13 @@ const Pay = () => {
         payMethod: payMethod,
       });
       if (res && res.code === 1) {
-        toast.success("支付成功");
+        toast.success("Payment successful");
         setPaymentSuccess(orderNumber);
       } else {
-        toast.error((res as { msg?: string })?.msg || "支付失败");
+        toast.error((res as { msg?: string })?.msg || "Payment failed");
       }
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "支付失败"));
+      toast.error(getErrorMessage(error, "Payment failed"));
     } finally {
       setLoading(false);
     }
@@ -97,15 +97,15 @@ const Pay = () => {
 
   const getStatusText = (status: number) => {
     const statusMap: Record<number, string> = {
-      1: "待付款",
-      2: "待接单",
-      3: "已接单",
-      4: "派送中",
-      5: "已完成",
-      6: "已取消",
-      7: "退款",
+      1: "Pending Payment",
+      2: "Awaiting Acceptance",
+      3: "Accepted",
+      4: "In Delivery",
+      5: "Completed",
+      6: "Cancelled",
+      7: "Refunded",
     };
-    return statusMap[status] || "未知";
+    return statusMap[status] || "Unknown";
   };
 
   return (
@@ -120,11 +120,11 @@ const Pay = () => {
           padding: "12px 16px",
         }}
       >
-        支付订单
+        Payment
       </NavBar>
 
       <Card style={{ margin: 12 }}>
-        <div style={{ fontWeight: "bold", marginBottom: 12 }}>订单信息</div>
+        <div style={{ fontWeight: "bold", marginBottom: 12 }}>Order Information</div>
         {orderLoading ? (
           <>
             <Skeleton animated style={{ "--width": "60%", marginBottom: 8 }} />
@@ -133,11 +133,11 @@ const Pay = () => {
         ) : (
           <>
             <div style={{ color: "#666", marginBottom: 8 }}>
-              订单号：{orderNumber || "-"}
+              Order #: {orderNumber || "-"}
             </div>
             {order && (
               <div style={{ color: "#666", marginBottom: 8 }}>
-                订单状态：
+                Status:
                 <span style={{ color: order.status === 1 ? "#ff6b35" : "#52c41a" }}>
                   {getStatusText(order.status)}
                 </span>
@@ -150,7 +150,7 @@ const Pay = () => {
                 alignItems: "center",
               }}
             >
-              <div style={{ color: "#666" }}>订单金额</div>
+              <div style={{ color: "#666" }}>Amount</div>
               <div style={{ color: "#ff6b35", fontWeight: "bold", fontSize: 20 }}>
                 ¥{order?.amount?.toFixed(2) || "0.00"}
               </div>
@@ -161,17 +161,17 @@ const Pay = () => {
 
       {order?.status === 1 && (
         <Card style={{ margin: 12 }}>
-          <div style={{ fontWeight: "bold", marginBottom: 12 }}>支付方式</div>
+          <div style={{ fontWeight: "bold", marginBottom: 12 }}>Payment Method</div>
           <Radio.Group
             value={payMethod}
             onChange={(val) => setPayMethod(val as number)}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <Radio value={1}>
-                <span style={{ marginLeft: 8 }}>💚 微信支付</span>
+                <span style={{ marginLeft: 8 }}>💚 WeChat Pay</span>
               </Radio>
               <Radio value={2}>
-                <span style={{ marginLeft: 8 }}>💙 支付宝</span>
+                <span style={{ marginLeft: 8 }}>💙 Alipay</span>
               </Radio>
             </div>
           </Radio.Group>
@@ -180,7 +180,7 @@ const Pay = () => {
 
       <Card style={{ margin: 12 }}>
         <div style={{ textAlign: "center", color: "#999" }}>
-          {order?.status === 1 ? "请在15分钟内完成支付" : "订单已支付或已取消"}
+          {order?.status === 1 ? "Please complete payment within 15 minutes" : "Order has been paid or cancelled"}
         </div>
       </Card>
 
@@ -211,7 +211,7 @@ const Pay = () => {
               fontWeight: 500,
             }}
           >
-            立即支付 ¥{order?.amount?.toFixed(2) || "0.00"}
+            Pay Now ¥{order?.amount?.toFixed(2) || "0.00"}
           </Button>
         </div>
       )}

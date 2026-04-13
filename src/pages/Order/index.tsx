@@ -52,7 +52,7 @@ const Order = () => {
           );
         }
       } catch (error: unknown) {
-        toast.error(getErrorMessage(error, "加载购物车失败"));
+        toast.error(getErrorMessage(error, "Failed to load cart"));
       }
     };
     fetchCart();
@@ -86,7 +86,7 @@ const Order = () => {
           setShopStatus(nextStatus);
         }
       } catch (error: unknown) {
-        toast.error(getErrorMessage(error, "获取店铺状态失败"));
+        toast.error(getErrorMessage(error, "Failed to get store status"));
       }
     };
     fetchShopInfo();
@@ -100,7 +100,7 @@ const Order = () => {
         setAddressList(res.data || []);
       }
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "加载地址失败"));
+      toast.error(getErrorMessage(error, "Failed to load addresses"));
     }
   };
 
@@ -131,25 +131,25 @@ const Order = () => {
 
   const handleAdd = async (item: ShoppingCartItem) => {
     if (!isShopOpen) {
-      toast.error("店铺已打烊，暂不支持加购");
+      toast.error("Store is closed, cannot add to cart");
       return;
     }
     try {
       await addShoppingCartAPI(buildCartPayload(item));
-      toast.success("已添加");
+      toast.success("Added");
       reloadCart();
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "操作失败"));
+      toast.error(getErrorMessage(error, "Operation failed"));
     }
   };
 
   const handleDecrease = async (item: ShoppingCartItem) => {
     try {
       await subShoppingCartAPI(buildCartPayload(item));
-      toast.success("已减少");
+      toast.success("Removed");
       reloadCart();
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "操作失败"));
+      toast.error(getErrorMessage(error, "Operation failed"));
     }
   };
 
@@ -165,16 +165,16 @@ const Order = () => {
 
   const handleSubmit = async () => {
     if (!isShopOpen) {
-      toast.error("店铺已打烊，暂不支持下单");
+      toast.error("Store is closed, cannot place order");
       return;
     }
     if (cartItems.length === 0) {
-      toast.error("购物车为空");
+      toast.error("Your cart is empty");
       return;
     }
 
     if (!selectedAddress) {
-      toast.error("请选择收货地址");
+      toast.error("Please select a delivery address");
       return;
     }
 
@@ -191,15 +191,15 @@ const Order = () => {
       });
 
       if (res && res.code === 1) {
-        toast.success("订单创建成功");
-        // 跳转到支付页面，传递订单信息
+        toast.success("Order placed successfully");
+        // Navigate to payment page with order info
         const orderData = res.data as { orderNumber?: string };
         navigate(`/pay?orderNumber=${orderData?.orderNumber || ""}`);
       } else {
-        toast.error((res as { msg?: string })?.msg || "订单创建失败");
+        toast.error((res as { msg?: string })?.msg || "Failed to place order");
       }
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "订单创建失败"));
+      toast.error(getErrorMessage(error, "Failed to place order"));
     } finally {
       setLoading(false);
     }
@@ -221,7 +221,7 @@ const Order = () => {
           padding: "12px 16px",
         }}
       >
-        确认订单
+        Confirm Order
       </NavBar>
 
       {/* 收货地址 */}
@@ -233,7 +233,7 @@ const Order = () => {
           <div style={{ flex: 1 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 20 }}>📍</span>
-              <span style={{ fontWeight: "bold", fontSize: 16 }}>收货地址</span>
+              <span style={{ fontWeight: "bold", fontSize: 16 }}>Delivery Address</span>
             </div>
             {addressLoading ? (
               <Skeleton animated style={{ "--width": "80%" }} />
@@ -252,7 +252,7 @@ const Order = () => {
                         fontSize: 10,
                       }}
                     >
-                      默认
+                      Default
                     </span>
                   )}
                 </div>
@@ -261,7 +261,7 @@ const Order = () => {
                 </div>
               </>
             ) : (
-              <div style={{ color: "#ff6b35" }}>请选择收货地址</div>
+              <div style={{ color: "#ff6b35" }}>Select delivery address</div>
             )}
           </div>
           <div style={{ color: "#999", fontSize: 20 }}>›</div>
@@ -270,7 +270,7 @@ const Order = () => {
 
       {/* 商品列表 */}
       <Card style={{ margin: 12 }}>
-        <div style={{ fontWeight: "bold", marginBottom: 12, fontSize: 16 }}>商品清单</div>
+        <div style={{ fontWeight: "bold", marginBottom: 12, fontSize: 16 }}>Item List</div>
         <List style={{ "--border-top": "none", "--border-bottom": "none" }}>
           {cartItems.map((item) => (
             <List.Item
@@ -345,7 +345,7 @@ const Order = () => {
         }}
       >
         <div>
-          <div style={{ color: "#999", fontSize: 12 }}>合计</div>
+          <div style={{ color: "#999", fontSize: 12 }}>Total</div>
           <div style={{ color: "#ff6b35", fontWeight: "bold", fontSize: 20 }}>
             ¥{totalPrice.toFixed(2)}
           </div>
@@ -358,7 +358,7 @@ const Order = () => {
           disabled={cartItems.length === 0 || loading || !isShopOpen}
           style={{ minWidth: 120 }}
         >
-          提交订单
+          Place Order
         </Button>
       </div>
 
@@ -371,7 +371,7 @@ const Order = () => {
       >
         <div style={{ padding: 16, height: "100%", display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <span style={{ fontWeight: "bold", fontSize: 18 }}>选择收货地址</span>
+            <span style={{ fontWeight: "bold", fontSize: 18 }}>Select Delivery Address</span>
             <Button
               size="small"
               color="primary"
@@ -381,7 +381,7 @@ const Order = () => {
                 navigate("/address/add");
               }}
             >
-              新增地址
+              Add Address
             </Button>
           </div>
           
@@ -389,7 +389,7 @@ const Order = () => {
             {addressList.length === 0 ? (
               <div style={{ textAlign: "center", padding: 40, color: "#999" }}>
                 <div style={{ fontSize: 48, marginBottom: 16 }}>📍</div>
-                <div>暂无地址，请先添加</div>
+                <div>No addresses found, please add one</div>
                 <Button
                   color="primary"
                   style={{ marginTop: 16 }}
@@ -398,7 +398,7 @@ const Order = () => {
                     navigate("/address/add");
                   }}
                 >
-                  添加地址
+                  Add Address
                 </Button>
               </div>
             ) : (
@@ -440,7 +440,7 @@ const Order = () => {
                                 fontSize: 10,
                               }}
                             >
-                              默认
+                              Default
                             </span>
                           )}
                         </div>
