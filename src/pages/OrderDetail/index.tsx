@@ -122,6 +122,7 @@ const OrderDetail = () => {
             style={{
               display: "flex",
               alignItems: "center",
+              flexWrap: "wrap",
               gap: 8,
               marginTop: 4,
             }}
