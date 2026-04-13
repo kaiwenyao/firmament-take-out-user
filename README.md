@@ -128,23 +128,15 @@ npm run preview
 npm run lint
 ```
 
-## Github Actions
+## 部署
 
-项目使用 Docker 容器化部署，通过 GitHub Actions 实现自动化 CI/CD。
-
-### 自动化部署
-
-当代码推送到 main 分支时，GitHub Actions 会自动：
-
-* 构建 Docker 镜像并推送到 Docker Hub
-* 通过 SSH 部署到服务器并启动容器
+项目使用 Docker 容器化部署。
 
 ### 部署文件
 
 * **Dockerfile**：多阶段构建，使用 nginx 提供静态文件服务
 * **deploy/nginx/user.conf.tpl**：nginx 配置模板，支持环境变量配置后端地址
 * **deploy/nginx/docker-entrypoint.d/99-envsubst.sh**：容器启动时替换环境变量
-* **.github/workflows/deploy-user-nginx.yml**：GitHub Actions 工作流配置
 
 ### 手动部署
 
