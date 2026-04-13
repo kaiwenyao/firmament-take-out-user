@@ -121,22 +121,17 @@ npm run preview
 npm run lint
 ```
 
-## GitHub Actions
+## Deployment
 
-Automated CI/CD with Docker containerization.
+### Docker
 
-### Auto Deployment
-
-Push to main branch triggers:
-* Build Docker image and push to Docker Hub
-* SSH deploy to server and start container
+The project includes Docker support for containerized deployment.
 
 ### Deployment Files
 
 * **Dockerfile** - Multi-stage build using nginx
 * **deploy/nginx/user.conf.tpl** - nginx config template
 * **deploy/nginx/docker-entrypoint.d/99-envsubst.sh** - Env variable substitution
-* **.github/workflows/deploy-user-nginx.yml** - GitHub Actions workflow
 
 ### Manual Deploy
 
