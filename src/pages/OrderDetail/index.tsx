@@ -28,7 +28,7 @@ const OrderDetail = () => {
         setOrder(res.data ?? null);
       }
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "加载订单详情失败"));
+      toast.error(getErrorMessage(error, "Failed to load order details"));
     } finally {
       setLoading(false);
     }
@@ -42,24 +42,24 @@ const OrderDetail = () => {
 
   const getStatusText = (status: number) => {
     const statusMap: Record<number, string> = {
-      1: "待付款",
-      2: "待接单",
-      3: "已接单",
-      4: "派送中",
-      5: "已完成",
-      6: "已取消",
-      7: "退款",
+      1: "Pending Payment",
+      2: "Awaiting Acceptance",
+      3: "Accepted",
+      4: "In Delivery",
+      5: "Completed",
+      6: "Cancelled",
+      7: "Refunded",
     };
-    return statusMap[status] || "未知";
+    return statusMap[status] || "Unknown";
   };
 
   const handleReminder = async () => {
     if (!order) return;
     try {
       await reminderOrderAPI(order.number);
-      toast.success("催单成功");
+      toast.success("Rush order sent");
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "催单失败"));
+      toast.error(getErrorMessage(error, "Failed to rush order"));
     }
   };
 
@@ -67,10 +67,10 @@ const OrderDetail = () => {
     if (!order) return;
     try {
       await cancelOrderAPI(order.number);
-      toast.success("订单已取消");
+      toast.success("Order cancelled");
       await fetchOrderDetail(order.number);
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error, "取消失败"));
+      toast.error(getErrorMessage(error, "Failed to cancel"));
     }
   };
 
@@ -87,10 +87,10 @@ const OrderDetail = () => {
             padding: "12px 16px",
           }}
         >
-          订单详情
+          Order Details
         </NavBar>
         <div style={{ textAlign: "center", padding: 40, color: "#999" }}>
-          {loading ? "加载中..." : "暂无数据"}
+          {loading ? "Loading..." : "No data"}
         </div>
       </div>
     );
@@ -108,20 +108,21 @@ const OrderDetail = () => {
           padding: "12px 16px",
         }}
       >
-        订单详情
+        Order Details
       </NavBar>
 
       <Card style={{ margin: 12 }}>
         <div style={{ marginBottom: 12 }}>
-          <div style={{ color: "#999", fontSize: 12 }}>订单号</div>
+          <div style={{ color: "#999", fontSize: 12 }}>Order Number</div>
           <div style={{ fontWeight: "bold", marginTop: 4 }}>{order.number}</div>
         </div>
         <div>
-          <div style={{ color: "#999", fontSize: 12 }}>订单状态</div>
+          <div style={{ color: "#999", fontSize: 12 }}>Order Status</div>
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              flexWrap: "wrap",
               gap: 8,
               marginTop: 4,
             }}
@@ -131,7 +132,7 @@ const OrderDetail = () => {
             </div>
             {order.status === 2 && (
               <Button size="small" onClick={handleReminder}>
-                催单
+                Rush Order
               </Button>
             )}
             {(order.status === 1 || order.status === 2) && (
@@ -140,7 +141,7 @@ const OrderDetail = () => {
                 color="danger"
                 onClick={handleCancel}
               >
-                取消订单
+                Cancel Order
               </Button>
             )}
           </div>
@@ -148,26 +149,26 @@ const OrderDetail = () => {
       </Card>
 
       <Card style={{ margin: 12 }}>
-        <div style={{ fontWeight: "bold", marginBottom: 12 }}>订单信息</div>
+        <div style={{ fontWeight: "bold", marginBottom: 12 }}>Order Info</div>
         <div style={{ color: "#666", marginBottom: 8 }}>
-          下单时间：{order.orderTime}
+          Order Time: {order.orderTime}
         </div>
         {order.checkoutTime && (
           <div style={{ color: "#666", marginBottom: 8 }}>
-            结账时间：{order.checkoutTime}
+            Checkout Time: {order.checkoutTime}
           </div>
         )}
         <div style={{ color: "#666", marginBottom: 8 }}>
-          收货人：{order.consignee}
+          Recipient: {order.consignee}
         </div>
         <div style={{ color: "#666", marginBottom: 8 }}>
-          联系电话：{order.phone}
+          Phone: {order.phone}
         </div>
-        <div style={{ color: "#666" }}>收货地址：{order.address}</div>
+        <div style={{ color: "#666" }}>Address: {order.address}</div>
       </Card>
 
       <Card style={{ margin: 12 }}>
-        <div style={{ fontWeight: "bold", marginBottom: 12 }}>商品清单</div>
+        <div style={{ fontWeight: "bold", marginBottom: 12 }}>Items</div>
         <List>
           {order.orderDetailList?.map((detail) => (
             <List.Item
@@ -213,7 +214,7 @@ const OrderDetail = () => {
             alignItems: "center",
           }}
         >
-          <div style={{ fontWeight: "bold" }}>合计</div>
+          <div style={{ fontWeight: "bold" }}>Total</div>
           <div style={{ color: "#ff6b35", fontWeight: "bold", fontSize: 20 }}>
             ¥{order.amount?.toFixed(2)}
           </div>
@@ -239,7 +240,7 @@ const OrderDetail = () => {
           }}
         >
           <div>
-            <div style={{ color: "#999", fontSize: 12 }}>待支付</div>
+            <div style={{ color: "#999", fontSize: 12 }}>Pending Payment</div>
             <div style={{ color: "#ff6b35", fontWeight: "bold", fontSize: 18 }}>
               ¥{order.amount?.toFixed(2)}
             </div>
@@ -250,7 +251,7 @@ const OrderDetail = () => {
             onClick={() => navigate(`/pay?orderNumber=${order.number}`)}
             style={{ minWidth: 120 }}
           >
-            立即支付
+            Pay Now
           </Button>
         </div>
       )}

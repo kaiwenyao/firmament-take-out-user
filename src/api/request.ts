@@ -40,7 +40,7 @@ instance.interceptors.response.use(
       // 使用类型断言来满足 axios 拦截器的类型要求
       return res as unknown as AxiosResponse<ApiResponse>;
     }
-    const errorMsg: string = res.msg || "操作失败";
+    const errorMsg: string = res.msg || "Operation failed";
     return Promise.reject(new Error(errorMsg));
   },
   (error: AxiosError) => {
@@ -53,7 +53,7 @@ instance.interceptors.response.use(
         localStorage.removeItem("userId");
 
         // 显示警告提示
-        toast.error("请先登录");
+        toast.error("Please sign in first");
 
         // 使用 React Router 导航到登录页（替换当前历史记录，避免返回到需要认证的页面）
         const currentPath = window.location.pathname;
@@ -63,16 +63,16 @@ instance.interceptors.response.use(
           }, 500);
         }
 
-        const errorMessage = "登录已过期，请重新登录";
+        const errorMessage = "Session expired, please sign in again";
         return Promise.reject(new Error(errorMessage));
       }
 
-      const errorMessage = "请先登录";
+      const errorMessage = "Please sign in first";
       return Promise.reject(new Error(errorMessage));
     }
     
     const errorMessage =
-      (error.response?.data as { msg?: string })?.msg || error.message || "网络异常";
+      (error.response?.data as { msg?: string })?.msg || error.message || "Network error";
     return Promise.reject(new Error(errorMessage));
   }
 );

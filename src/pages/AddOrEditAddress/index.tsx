@@ -56,11 +56,11 @@ const AddOrEditAddress = () => {
               districtName: address.districtName || "",
             });
           } else {
-            toast.error("地址不存在");
+            toast.error("Address not found");
             navigate(-1);
           }
         } catch (error: unknown) {
-          const errorMessage = error instanceof Error ? error.message : "加载地址失败";
+          const errorMessage = error instanceof Error ? error.message : "Failed to load address";
           toast.error(errorMessage);
           navigate(-1);
         } finally {
@@ -77,7 +77,7 @@ const AddOrEditAddress = () => {
       if (id) {
         // 编辑模式：使用完整的地址信息
         if (!currentAddress) {
-          toast.error("地址信息加载失败，请刷新后重试");
+          toast.error("Failed to load address, please refresh and try again");
           setLoading(false);
           return;
         }
@@ -96,10 +96,10 @@ const AddOrEditAddress = () => {
         
         const res = await updateAddressAPI(params);
         if (res && res.code === 1) {
-          toast.success("修改成功");
+          toast.success("Updated successfully");
           navigate(-1);
         } else {
-          toast.error(res?.msg || "修改失败");
+          toast.error(res?.msg || "Failed to update");
         }
       } else {
         // 新增模式：使用空值
@@ -115,14 +115,14 @@ const AddOrEditAddress = () => {
         
         const res = await addAddressAPI(params);
         if (res && res.code === 1) {
-          toast.success("添加成功");
+          toast.success("Added successfully");
           navigate(-1);
         } else {
-          toast.error(res?.msg || "添加失败");
+          toast.error(res?.msg || "Failed to add");
         }
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "操作失败";
+      const errorMessage = error instanceof Error ? error.message : "Operation failed";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -162,7 +162,7 @@ const AddOrEditAddress = () => {
           padding: "12px 16px",
         }}
       >
-        {id ? "编辑地址" : "新增地址"}
+        {id ? "Edit Address" : "Add Address"}
       </NavBar>
 
       {detailLoading ? (
@@ -180,40 +180,40 @@ const AddOrEditAddress = () => {
           >
           <Form.Item
             name="consignee"
-            label="收货人"
-            rules={[{ required: true, message: "请输入收货人" }]}
+            label="Recipient"
+            rules={[{ required: true, message: "Please enter recipient name" }]}
           >
-            <Input placeholder="请输入收货人" disabled={detailLoading} />
+            <Input placeholder="Enter recipient name" disabled={detailLoading} />
           </Form.Item>
 
           <Form.Item
             name="phone"
-            label="手机号"
+            label="Phone"
             rules={[
-              { required: true, message: "请输入手机号" },
-              { pattern: /^1[3-9]\d{9}$/, message: "请输入正确的手机号" },
+              { required: true, message: "Please enter phone number" },
+              { pattern: /^1[3-9]\d{9}$/, message: "Please enter a valid phone number" },
             ]}
           >
-            <Input placeholder="请输入手机号" disabled={detailLoading} />
+            <Input placeholder="Enter phone number" disabled={detailLoading} />
           </Form.Item>
 
-          <Form.Item name="sex" label="性别" initialValue="1">
+          <Form.Item name="sex" label="Gender" initialValue="1">
             <Radio.Group disabled={detailLoading}>
-              <Radio value="1">男</Radio>
-              <Radio value="0">女</Radio>
+              <Radio value="1">Male</Radio>
+              <Radio value="0">Female</Radio>
             </Radio.Group>
           </Form.Item>
 
           <Form.Item
             name="detail"
-            label="详细地址"
-            rules={[{ required: true, message: "请输入详细地址" }]}
+            label="Address Details"
+            rules={[{ required: true, message: "Please enter address details" }]}
           >
-            <Input placeholder="请输入详细地址" disabled={detailLoading} />
+            <Input placeholder="Enter address details" disabled={detailLoading} />
           </Form.Item>
 
-          <Form.Item name="label" label="标签">
-            <Input placeholder="如：家、公司" disabled={detailLoading} />
+          <Form.Item name="label" label="Label">
+            <Input placeholder="e.g., Home, Office" disabled={detailLoading} />
           </Form.Item>
           </Form>
           
@@ -226,7 +226,7 @@ const AddOrEditAddress = () => {
               onClick={handleFormSubmit}
               size="large"
             >
-              保存
+              Save
             </Button>
           </div>
         </>

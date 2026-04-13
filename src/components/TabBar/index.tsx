@@ -24,17 +24,17 @@ const TabBarComponent = () => {
   const tabs = [
     {
       key: "/home",
-      title: "首页",
+      title: "Home",
       icon: <AppOutline />,
     },
     {
       key: "/order",
-      title: "订单",
+      title: "Orders",
       icon: <FileOutline />,
     },
     {
       key: "/my",
-      title: "我的",
+      title: "Profile",
       icon: <UserOutline />,
     },
   ];
