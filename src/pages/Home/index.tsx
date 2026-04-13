@@ -486,10 +486,15 @@ const Home = () => {
   }
 
   return (
-    <div style={{ paddingBottom: 60 }}>
-      <NavBar 
+    <div style={{ paddingBottom: 60, paddingTop: 52 }}>
+      <NavBar
         back={null}
         style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 999,
           backgroundColor: "#f5f5f5",
           color: "#333",
           fontSize: 20,
@@ -618,8 +623,9 @@ const Home = () => {
                       </div>
                       {Array.isArray(dish.flavors) && dish.flavors.length > 0 ? (
                         <Button
-                          size="small"
+                          fill="none"
                           color="primary"
+                          style={{ fontSize: 12, padding: "2px 4px", height: "auto" }}
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedDish(dish);
