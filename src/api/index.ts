@@ -1,4 +1,4 @@
-// 统一导出所有 API 模块
+// Unified export of all API modules
 export * from "./auth";
 export * from "./category";
 export * from "./dish";
@@ -8,5 +8,5 @@ export * from "./order";
 export * from "./address";
 export * from "./shop";
 
-// 导出通用类型
+// Export common types
 export type { ApiResponse } from "./request";

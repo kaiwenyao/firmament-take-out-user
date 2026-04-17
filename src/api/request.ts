@@ -3,20 +3,20 @@ import type { AxiosResponse } from "axios";
 import { toast } from "sonner";
 import { triggerNavigation } from "@/lib/navigation";
 
-// 通用 API 响应类型
+// Generic API response type
 export interface ApiResponse<T = unknown> {
   code: number;
   msg?: string;
   data?: T;
 }
 
-// 创建 axios 实例
+// Create axios instance
 const instance = axios.create({
   baseURL: "/api",
   timeout: 10000,
 });
 
-// 请求拦截器
+// Request interceptor
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -30,32 +30,32 @@ instance.interceptors.request.use(
   }
 );
 
-// 响应拦截器 - 返回 response.data 而不是整个 response
+// Response interceptor - return response.data instead of whole response
 instance.interceptors.response.use(
   (response: AxiosResponse<ApiResponse>) => {
     const res = response.data;
-    // 小程序后端返回格式：{ code: 1, msg: 'success', data: ... }
+    // Mini program backend response format: { code: 1, msg: 'success', data: ... }
     if (res.code === 1 || res.code === 200) {
-      // 返回 response.data，这样调用方可以直接使用 res.code 和 res.data
-      // 使用类型断言来满足 axios 拦截器的类型要求
+      // Return response.data, so caller can directly use res.code and res.data
+      // Use type assertion to satisfy axios interceptor type requirements
       return res as unknown as AxiosResponse<ApiResponse>;
     }
     const errorMsg: string = res.msg || "Operation failed";
     return Promise.reject(new Error(errorMsg));
   },
   (error: AxiosError) => {
-    // 处理 401 未授权错误
+    // Handle 401 unauthorized errors
     if (error.response?.status === 401) {
       const token = localStorage.getItem("token");
       if (token) {
-        // 清除本地存储的 token
+        // Clear locally stored token
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
 
-        // 显示警告提示
+        // Show warning toast
         toast.error("Please sign in first");
 
-        // 使用 React Router 导航到登录页（替换当前历史记录，避免返回到需要认证的页面）
+        // Use React Router to navigate to login page (replace current history to avoid returning to authenticated page)
         const currentPath = window.location.pathname;
         if (currentPath !== "/login") {
           setTimeout(() => {

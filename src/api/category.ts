@@ -1,9 +1,9 @@
 import request from "./request";
 import type { ApiResponse } from "./request";
 
-// 分类数据类型定义
+// Category data type definition
 export interface Category {
-  id: string; // ID为string类型
+  id: string; // ID is string type
   type: number;
   name: string;
   sort: number;
@@ -13,9 +13,9 @@ export interface Category {
 }
 
 /**
- * 菜品和套餐的分类
- * @param params 查询参数
- * @returns 分类列表
+ * Dish and set meal categories
+ * @param params Query parameters
+ * @returns Category list
  */
 export const getCategoryListAPI = async (
   params?: { type?: number }

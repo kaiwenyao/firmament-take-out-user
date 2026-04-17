@@ -1,26 +1,26 @@
 import request from "./request";
 import type { ApiResponse } from "./request";
 
-// 订单详情数据类型定义
+// Order detail data type definition
 export interface OrderDetail {
-  id: string; // ID为string类型
+  id: string; // ID is string type
   name: string;
   image: string;
-  orderId: string; // ID为string类型
-  dishId: string; // ID为string类型
-  setmealId: string; // ID为string类型
+  orderId: string; // ID is string type
+  dishId: string; // ID is string type
+  setmealId: string; // ID is string type
   dishFlavor: string;
   number: number;
   amount: number;
 }
 
-// 订单数据类型定义
+// Order data type definition
 export interface Order {
-  id: string; // ID为string类型
+  id: string; // ID is string type
   number: string;
   status: number;
-  userId: string; // ID为string类型
-  addressBookId: string; // 地址ID为string类型
+  userId: string; // ID is string type
+  addressBookId: string; // Address ID is string type
   orderTime: string;
   checkoutTime: string;
   payMethod: number;
@@ -32,9 +32,9 @@ export interface Order {
   orderDetailList: OrderDetail[];
 }
 
-// 提交订单参数
+// Submit order parameters
 export interface SubmitOrderParams {
-  addressBookId: string; // 地址ID为string类型
+  addressBookId: string; // Address ID is string type
   payMethod: number;
   estimatedDeliveryTime?: string;
   deliveryStatus?: number;
@@ -44,28 +44,28 @@ export interface SubmitOrderParams {
   amount: number;
 }
 
-// 支付订单参数
+// Payment order parameters
 export interface PaymentOrderParams {
   orderNumber: string;
   payMethod: number;
 }
 
-// 订单分页查询参数
+// Order page query parameters
 export interface OrderPageQuery {
   page: number;
   pageSize: number;
 }
 
-// 订单分页响应数据
+// Order page response data
 export interface OrderPageResponse {
   records: Order[];
   total: number;
 }
 
 /**
- * 提交订单
- * @param params 订单参数
- * @returns 操作结果
+ * Submit order
+ * @param params Order parameters
+ * @returns Operation result
  */
 export const submitOrderAPI = async (
   params: SubmitOrderParams
@@ -74,9 +74,9 @@ export const submitOrderAPI = async (
 };
 
 /**
- * 支付订单
- * @param params 支付参数
- * @returns 操作结果
+ * Payment order
+ * @param params Payment parameters
+ * @returns Operation result
  */
 export const paymentOrderAPI = async (
   params: PaymentOrderParams
@@ -85,9 +85,9 @@ export const paymentOrderAPI = async (
 };
 
 /**
- * 获取订单分页列表
- * @param params 查询参数
- * @returns 订单分页数据
+ * Get order page list
+ * @param params Query parameters
+ * @returns Order page data
  */
 export const getOrderPageAPI = async (
   params: OrderPageQuery
@@ -96,36 +96,36 @@ export const getOrderPageAPI = async (
 };
 
 /**
- * 再来一单
- * @param orderNumber 订单号
- * @returns 操作结果
+ * Order again
+ * @param orderNumber Order number
+ * @returns Operation result
  */
 export const repetitionOrderAPI = async (orderNumber: string): Promise<ApiResponse> => {
   return request.post(`/order/repetition/number/${orderNumber}`);
 };
 
 /**
- * 催单
- * @param orderNumber 订单号
- * @returns 操作结果
+ * Rush order
+ * @param orderNumber Order number
+ * @returns Operation result
  */
 export const reminderOrderAPI = async (orderNumber: string): Promise<ApiResponse> => {
   return request.get(`/order/reminder/number/${orderNumber}`);
 };
 
 /**
- * 获取订单详情
- * @param orderNumber 订单号
- * @returns 订单详情
+ * Get order details
+ * @param orderNumber Order number
+ * @returns Order details
  */
 export const getOrderDetailAPI = async (orderNumber: string): Promise<ApiResponse<Order>> => {
   return request.get(`/order/orderDetail/number/${orderNumber}`);
 };
 
 /**
- * 取消订单
- * @param orderNumber 订单号
- * @returns 操作结果
+ * Cancel order
+ * @param orderNumber Order number
+ * @returns Operation result
  */
 export const cancelOrderAPI = async (orderNumber: string): Promise<ApiResponse> => {
   return request.put(`/order/cancel/number/${orderNumber}`);

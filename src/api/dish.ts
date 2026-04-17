@@ -1,17 +1,17 @@
 import request from "./request";
 import type { ApiResponse } from "./request";
 
-// 菜品口味定义
+// Dish flavor definition
 export interface DishFlavor {
   name: string;
   value: string[];
 }
 
-// 菜品数据类型定义
+// Dish data type definition
 export interface Dish {
-  id: string; // ID为string类型
+  id: string; // ID is string type
   name: string;
-  categoryId: string; // ID为string类型
+  categoryId: string; // ID is string type
   price: number;
   code: string;
   image: string;
@@ -20,8 +20,8 @@ export interface Dish {
   sort: number;
   createTime: string;
   updateTime: string;
-  createUser: string; // ID为string类型
-  updateUser: string; // ID为string类型
+  createUser: string; // ID is string type
+  updateUser: string; // ID is string type
   dishFlavor: string;
   flavors?: DishFlavor[];
   copies?: number;
@@ -30,12 +30,12 @@ export interface Dish {
 }
 
 /**
- * 查询菜品管理列表
- * @param params 查询参数
- * @returns 菜品列表
+ * Query dish list
+ * @param params Query parameters
+ * @returns Dish list
  */
 export const dishListByCategoryIdAPI = async (
-  params?: { categoryId?: string } // ID为string类型
+  params?: { categoryId?: string } // ID is string type
 ): Promise<ApiResponse<Dish[]>> => {
   return request.get("/dish/list", { params });
 };

@@ -1,29 +1,29 @@
 import request from "./request";
 import type { ApiResponse } from "./request";
 
-// 购物车项数据类型定义
+// Shopping cart item data type definition
 export interface ShoppingCartItem {
-  id: string; // ID为string类型
+  id: string; // ID is string type
   name: string;
   image: string;
-  dishId: string; // ID为string类型
-  setmealId: string; // ID为string类型
+  dishId: string; // ID is string type
+  setmealId: string; // ID is string type
   dishFlavor: string;
   number: number;
   amount: number;
 }
 
-// 购物车添加/减少参数
+// Shopping cart add/reduce parameters
 export interface ShoppingCartParams {
-  dishId?: string; // ID为string类型
-  setmealId?: string; // ID为string类型
+  dishId?: string; // ID is string type
+  setmealId?: string; // ID is string type
   dishFlavor?: string;
 }
 
 /**
- * 购物车----加菜功能实现
- * @param params 添加参数
- * @returns 操作结果
+ * Shopping cart - add dish implementation
+ * @param params Add parameters
+ * @returns Operation result
  */
 export const addShoppingCartAPI = async (
   params: ShoppingCartParams
@@ -32,9 +32,9 @@ export const addShoppingCartAPI = async (
 };
 
 /**
- * 购物车减菜
- * @param params 减少参数
- * @returns 操作结果
+ * Shopping cart - reduce dish
+ * @param params Reduce parameters
+ * @returns Operation result
  */
 export const subShoppingCartAPI = async (
   params: ShoppingCartParams
@@ -43,16 +43,16 @@ export const subShoppingCartAPI = async (
 };
 
 /**
- * 获取购物车列表
- * @returns 购物车列表
+ * Get shopping cart list
+ * @returns Shopping cart list
  */
 export const getShoppingCartAPI = async (): Promise<ApiResponse<ShoppingCartItem[]>> => {
   return request.get("/shoppingCart/list");
 };
 
 /**
- * 清空购物车
- * @returns 操作结果
+ * Clear shopping cart
+ * @returns Operation result
  */
 export const delShoppingCartAPI = async (): Promise<ApiResponse> => {
   return request.delete("/shoppingCart/clean");

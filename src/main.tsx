@@ -4,10 +4,10 @@ import { unstableSetRender } from "antd-mobile";
 import "./index.css";
 import App from "./App.tsx";
 
-// React 19 兼容配置：为 antd-mobile 设置自定义渲染方法
-// 由于 React 19 调整了 react-dom 的导出方式，需要使用 unstableSetRender 来适配
+// React 19 compatibility: set custom render method for antd-mobile
+// Since React 19 adjusted react-dom exports, need to use unstableSetRender for compatibility
 unstableSetRender((node, container) => {
-  // 使用类型断言来扩展 container 类型，添加 _reactRoot 属性
+  // Use type assertion to extend container type, add _reactRoot property
   const containerWithRoot = container as HTMLElement & { _reactRoot?: ReturnType<typeof createRoot> };
   containerWithRoot._reactRoot ||= createRoot(container);
   const root = containerWithRoot._reactRoot;
@@ -18,14 +18,14 @@ unstableSetRender((node, container) => {
   };
 });
 
-// 捕获并忽略浏览器自动填充覆盖层导致的错误
+// Capture and ignore errors caused by browser autofill overlay
 window.addEventListener('error', (event) => {
   if (
     event.message?.includes('insertBefore') ||
     event.message?.includes('bootstrap-autofill-overlay') ||
     event.filename?.includes('bootstrap-autofill-overlay')
   ) {
-    // 记录被抑制的错误，便于调试和监控
+    // Log suppressed errors for debugging and monitoring
     console.info('[Suppressed Error]', {
       message: event.message,
       filename: event.filename,
@@ -38,14 +38,14 @@ window.addEventListener('error', (event) => {
   }
 });
 
-// 捕获未处理的 Promise 拒绝
+// Capture unhandled Promise rejections
 window.addEventListener('unhandledrejection', (event) => {
   if (
     event.reason?.message?.includes('insertBefore') ||
     event.reason?.message?.includes('bootstrap-autofill-overlay') ||
     event.reason?.stack?.includes('bootstrap-autofill-overlay')
   ) {
-    // 记录被抑制的 Promise 拒绝，便于调试和监控
+    // Log suppressed Promise rejections for debugging and monitoring
     console.info('[Suppressed Promise Rejection]', {
       reason: event.reason?.message,
       stack: event.reason?.stack,

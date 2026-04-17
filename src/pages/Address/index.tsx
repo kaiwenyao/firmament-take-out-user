@@ -21,7 +21,7 @@ const AddressPage = () => {
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [deleteId, setDeleteId] = useState<string>("");
 
-  // 请求数据对象
+  // Request data object
   const [reqData, setReqData] = useState({});
 
   useEffect(() => {

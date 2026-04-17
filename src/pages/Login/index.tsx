@@ -12,7 +12,7 @@ const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
-    // 如果已登录，直接跳转到首页
+    // If already logged in, redirect to home
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/home", { replace: true });
@@ -28,7 +28,7 @@ const Login = () => {
       });
 
       if (res && res.code === 1 && res.data) {
-        // 保存 token 和 userId
+        // Save token and userId
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", res.data.id);
         toast.success("Login successful");
@@ -54,7 +54,7 @@ const Login = () => {
         alignItems: "center",
       }}
     >
-      {/* Logo 和标题区域 */}
+      {/* Logo and title area */}
       <div
         style={{
           paddingTop: 80,
@@ -96,7 +96,7 @@ const Login = () => {
         </div>
       </div>
 
-      {/* 登录表单卡片 */}
+      {/* Login form card */}
       <div
         style={{
           width: "calc(100% - 48px)",
@@ -206,7 +206,7 @@ const Login = () => {
           </Form.Item>
         </Form>
 
-        {/* 游客浏览按钮 */}
+        {/* Guest browse button */}
         <Button
           block
           fill="outline"
@@ -225,7 +225,7 @@ const Login = () => {
         </Button>
       </div>
 
-      {/* 底部信息 */}
+      {/* Footer info */}
       <div
         style={{
           marginTop: "auto",

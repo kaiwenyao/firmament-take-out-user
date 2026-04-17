@@ -18,7 +18,7 @@ const HistoryOrder = () => {
   const [loading, setLoading] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  // 请求数据对象
+  // Request data object
   const [reqData, setReqData] = useState({
     page: 1,
     pageSize: 10,
@@ -154,7 +154,7 @@ const HistoryOrder = () => {
                   ¥{order.amount?.toFixed(2)}
                 </div>
                 <div style={{ display: "flex", gap: 8 }}>
-                  {/* 待支付状态显示支付按钮 */}
+                  {/* Show payment button for pending payment status */}
                   {order.status === 1 && (
                     <Button
                       size="small"

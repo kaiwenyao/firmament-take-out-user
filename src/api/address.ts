@@ -1,7 +1,7 @@
 import request from "./request";
 import type { ApiResponse } from "./request";
 
-// 地址数据类型定义
+// Address data type definition
 export interface Address {
   id: string;
   userId: string;
@@ -19,67 +19,67 @@ export interface Address {
   isDefault: number;
 }
 
-// 获取完整地址字符串
+// Get full address string
 export const getFullAddress = (address: Address): string => {
   return `${address.provinceName || ""}${address.cityName || ""}${address.districtName || ""}${address.detail || ""}`;
 };
 
 /**
- * 获取地址列表
- * @returns 地址列表
+ * Get address list
+ * @returns Address list
  */
 export const getAddressListAPI = async (): Promise<ApiResponse<Address[]>> => {
   return request.get("/addressBook/list");
 };
 
 /**
- * 根据ID获取地址详情
- * @param id 地址ID
- * @returns 地址详情
+ * Get address details by ID
+ * @param id Address ID
+ * @returns Address details
  */
 export const getAddressByIdAPI = async (id: string): Promise<ApiResponse<Address>> => {
   return request.get(`/addressBook/${id}`);
 };
 
 /**
- * 新增地址
- * @param params 地址参数
- * @returns 操作结果
+ * Add address
+ * @param params Address parameters
+ * @returns Operation result
  */
 export const addAddressAPI = async (params: Partial<Address>): Promise<ApiResponse> => {
   return request.post("/addressBook", params);
 };
 
 /**
- * 修改地址
- * @param params 地址参数
- * @returns 操作结果
+ * Update address
+ * @param params Address parameters
+ * @returns Operation result
  */
 export const updateAddressAPI = async (params: Partial<Address>): Promise<ApiResponse> => {
   return request.put("/addressBook", params);
 };
 
 /**
- * 删除地址
- * @param id 地址ID
- * @returns 操作结果
+ * Delete address
+ * @param id Address ID
+ * @returns Operation result
  */
 export const deleteAddressAPI = async (id: string): Promise<ApiResponse> => {
   return request.delete("/addressBook", { params: { id } });
 };
 
 /**
- * 获取默认地址
- * @returns 默认地址
+ * Get default address
+ * @returns Default address
  */
 export const getDefaultAddressAPI = async (): Promise<ApiResponse<Address>> => {
   return request.get("/addressBook/default");
 };
 
 /**
- * 设置默认地址
- * @param id 地址ID
- * @returns 操作结果
+ * Set default address
+ * @param id Address ID
+ * @returns Operation result
  */
 export const setDefaultAddressAPI = async (id: string): Promise<ApiResponse> => {
   return request.put("/addressBook/default", { id });

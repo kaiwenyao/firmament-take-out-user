@@ -30,8 +30,8 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 提前检查路径，如果不是 /home 页面，直接返回 null，避免执行任何副作用
-  // 这是一个保护措施，正常情况下路由配置应该确保 Home 组件只在 /home 路径下渲染
+  // Early path check: if not on /home page, return null to prevent any side effects
+  // This is a safeguard - route config should ensure Home only renders at /home
   const isHomePage = location.pathname === "/home";
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -46,14 +46,14 @@ const Home = () => {
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [selectedFlavorMap, setSelectedFlavorMap] = useState<Record<string, string>>({});
-  const [shopStatus, setShopStatus] = useState<number>(1); // 1:营业中 0:休息中
+  const [shopStatus, setShopStatus] = useState<number>(1); // 1: Open, 0: Closed
   const dishRequestIdRef = useRef(0);
   const setmealRequestIdRef = useRef(0);
   const [loginPromptVisible, setLoginPromptVisible] = useState(false);
   const isShopOpen = shopStatus === 1;
 
-  // 请求数据对象
-  const [categoryReqData] = useState({ type: 1 }); // 只加载菜品分类，套餐分类通过type=2加载
+  // Request data object
+  const [categoryReqData] = useState({ type: 1 }); // Only load dish categories, set meal categories loaded via type=2
   const [dishReqData, setDishReqData] = useState<{ categoryId?: string }>({});
   const [setmealReqData, setSetmealReqData] = useState<{ categoryId?: string }>({});
   const [cartReqData, setCartReqData] = useState({});
@@ -72,7 +72,7 @@ const Home = () => {
           return parsed.filter((item) => typeof item === "string") as string[];
         }
       } catch {
-        // 非 JSON 字符串时按分隔符处理
+        // Handle non-JSON strings as comma-separated values
       }
       if (trimmed.includes(",")) {
         return trimmed.split(",").map((item) => item.trim()).filter(Boolean);
@@ -85,14 +85,14 @@ const Home = () => {
   const hasToken = !!localStorage.getItem("token");
   const canBrowse = isHomePage;
 
-  // 加载分类列表（同时加载菜品分类和套餐分类）
+  // Load category list (load both dish categories and set meal categories)
   useEffect(() => {
     if (!canBrowse) return;
     if (categories.length > 0) return;
     const fetchCategories = async () => {
       setLoadingCategories(true);
       try {
-        // 同时加载菜品分类（type=1）和套餐分类（type=2）
+        // Load both dish categories (type=1) and set meal categories (type=2)
         const [dishRes, setmealRes] = await Promise.all([
           getCategoryListAPI({ type: 1 }),
           getCategoryListAPI({ type: 2 }),
@@ -106,7 +106,7 @@ const Home = () => {
           allCategories.push(...setmealRes.data);
         }
         
-        // 按sort排序
+        // Sort by sort order
         allCategories.sort((a, b) => a.sort - b.sort);
         setCategories(allCategories);
       } catch (error: unknown) {
@@ -118,11 +118,11 @@ const Home = () => {
     fetchCategories();
   }, [canBrowse, categories.length, categoryReqData]);
 
-  // 加载菜品列表（仅当分类type=1时）
+  // Load dish list (only when category type=1)
   useEffect(() => {
     if (!canBrowse) return;
 
-    // 检查当前分类是否是菜品分类
+    // Check if current category is a dish category
     const currentCategory = categories[activeCategory];
     const isFoodCategory = currentCategory && currentCategory.type === 1;
     const hasCategoryId = dishReqData.categoryId !== undefined;
@@ -138,7 +138,7 @@ const Home = () => {
               return;
             }
             const nextDishes = res.data || [];
-            // 只设置菜品数据，购物车数量通过单独的 useEffect 更新
+            // Only set dish data, cart quantities are updated via separate useEffect
             setDishes(nextDishes);
           }
         } catch (error: unknown) {
@@ -151,20 +151,20 @@ const Home = () => {
       };
       fetchDishes();
     } else {
-      // 如果不是菜品分类，清空菜品列表
+      // If not a dish category, clear the dish list
       dishRequestIdRef.current += 1;
       setDishes([]);
       setLoadingDishes(false);
     }
-    // 移除 categories 和 activeCategory 依赖，因为它们的变化已经通过 dishReqData 体现
+    // Remove categories and activeCategory dependencies since their changes are reflected via dishReqData
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canBrowse, dishReqData]);
 
-  // 加载套餐列表（仅当分类type=2时）
+  // Load set meal list (only when category type=2)
   useEffect(() => {
     if (!canBrowse) return;
 
-    // 检查当前分类是否是套餐分类
+    // Check if current category is a set meal category
     const currentCategory = categories[activeCategory];
     const isSetmealCategory = currentCategory && currentCategory.type === 2;
     const hasCategoryId = setmealReqData.categoryId !== undefined;
@@ -192,16 +192,16 @@ const Home = () => {
       };
       fetchSetmeals();
     } else {
-      // 如果不是套餐分类，清空套餐列表
+      // If not a set meal category, clear the set meal list
       setmealRequestIdRef.current += 1;
       setSetmeals([]);
       setLoadingSetmeals(false);
     }
-    // 移除 categories 和 activeCategory 依赖，因为它们的变化已经通过 setmealReqData 体现
+    // Remove categories and activeCategory dependencies since their changes are reflected via setmealReqData
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canBrowse, setmealReqData]);
 
-  // 加载购物车
+  // Load cart
   useEffect(() => {
     if (!canBrowse) return;
     if (!hasToken) {
@@ -218,31 +218,31 @@ const Home = () => {
           setCartItems(nextItems);
         }
       } catch {
-        // 购物车可能为空，不显示错误
+        // Cart may be empty, don't show error
       }
     };
     fetchCart();
   }, [canBrowse, hasToken, cartReqData]);
 
-  // 当购物车变化时，合并购物车数量到菜品列表
+  // When cart changes, merge cart quantities to dish list
   useEffect(() => {
     if (dishes.length > 0) {
       setDishes((prev) => updateDishesWithCart(prev, cartItems));
     }
-    // 只依赖 cartItems，避免循环依赖
+    // Only depend on cartItems to avoid circular dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItems]);
 
-  // 当购物车变化时，合并购物车数量到套餐列表
+  // When cart changes, merge cart quantities to set meal list
   useEffect(() => {
     if (setmeals.length > 0) {
       setSetmeals((prev) => updateSetmealsWithCart(prev, cartItems));
     }
-    // 只依赖 cartItems，避免循环依赖
+    // Only depend on cartItems to avoid circular dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItems]);
 
-  // 加载店铺信息
+  // Load shop info
   useEffect(() => {
     if (!canBrowse) return;
     const fetchShopInfo = async () => {
@@ -253,17 +253,17 @@ const Home = () => {
           setShopStatus(nextStatus);
         }
       } catch {
-        // 忽略错误
+        // Ignore error
       }
     };
     fetchShopInfo();
   }, [canBrowse, shopReqData]);
 
-  // 当分类变化时，更新菜品和套餐请求数据
+  // When category changes, update dish and set meal request data
   useEffect(() => {
     if (categories.length > 0) {
       const categoryId = categories[activeCategory]?.id;
-      // 只在 categoryId 真正变化时才更新，避免创建新对象导致的重复请求
+      // Only update when categoryId actually changes to avoid duplicate requests from new object creation
       setDishReqData((prev) => {
         if (prev.categoryId === categoryId) return prev;
         return { categoryId };
@@ -275,7 +275,7 @@ const Home = () => {
     }
   }, [categories, activeCategory]);
 
-  // 当路由变化时，刷新购物车
+  // When route changes, refresh cart
   useEffect(() => {
     if (location.pathname === "/home") {
       setCartReqData((prev) => ({ ...prev }));
@@ -306,14 +306,14 @@ const Home = () => {
     });
     return list.map((dish) => {
       const count = countMap.get(dish.id);
-      // 只有当菜品在购物车中且数量大于0时才设置 dishNumber
+      // Only set dishNumber when dish is in cart and quantity > 0
       if (count !== undefined && count > 0) {
         return {
           ...dish,
           dishNumber: count,
         };
       }
-      // 如果菜品不在购物车中，清空数量显示
+      // If dish is not in cart, clear the quantity display
       return {
         ...dish,
         dishNumber: undefined,
@@ -333,14 +333,14 @@ const Home = () => {
     });
     return list.map((setmeal) => {
       const count = countMap.get(setmeal.id);
-      // 只有当套餐在购物车中且数量大于0时才设置 setmealNumber
+      // Only set setmealNumber when set meal is in cart and quantity > 0
       if (count !== undefined && count > 0) {
         return {
           ...setmeal,
           setmealNumber: count,
         };
       }
-      // 如果套餐不在购物车中，清空数量显示
+      // If set meal is not in cart, clear the quantity display
       return {
         ...setmeal,
         setmealNumber: undefined,
@@ -359,7 +359,7 @@ const Home = () => {
         return selected ? `${flavor.name}:${selected}` : "";
       })
       .filter(Boolean);
-    return parts.join("、");
+    return parts.join(", ");
   };
 
   const reloadCart = () => {
@@ -479,8 +479,8 @@ const Home = () => {
 
   const totalCount = cartItems.reduce((sum, item) => sum + item.number, 0);
 
-  // 安全保护：如果不是 /home 页面，不渲染任何内容
-  // 这可以防止组件在错误的路由下被意外渲染时产生副作用
+  // Safety guard: if not on /home page, don't render anything
+  // This prevents side effects when component is accidentally rendered at wrong route
   if (!isHomePage) {
     return null;
   }
@@ -524,9 +524,9 @@ const Home = () => {
         </div>
       </Card>
 
-      {/* 分类和菜品 */}
+      {/* Categories and dishes */}
       <div style={{ display: "flex", height: "calc(100vh - 200px)" }}>
-        {/* 左侧分类 */}
+        {/* Left sidebar categories */}
         <div
           style={{
             width: 100,
@@ -560,7 +560,7 @@ const Home = () => {
           )}
         </div>
 
-        {/* 右侧商品列表（菜品+套餐） */}
+        {/* Right side product list (dishes + set meals) */}
         <div style={{ flex: 1, overflowY: "auto", padding: "0 12px" }}>
           {loadingDishes || loadingSetmeals ? (
             <div style={{ paddingTop: 12 }}>
@@ -580,7 +580,7 @@ const Home = () => {
             <Empty description="No items in this category" />
           ) : (
             <>
-              {/* 菜品列表 */}
+              {/* Dish list */}
               {dishes.map((dish) => (
               <Card
                 key={dish.id}
@@ -674,7 +674,7 @@ const Home = () => {
               </Card>
               ))}
 
-              {/* 套餐列表 */}
+              {/* Set meal list */}
               {setmeals.map((setmeal) => (
                 <Card
                   key={setmeal.id}
@@ -765,7 +765,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 底部购物车栏 */}
+      {/* Bottom cart bar */}
       <div
         style={{
           position: "fixed",
@@ -814,7 +814,7 @@ const Home = () => {
         </Button>
       </div>
 
-      {/* 购物车弹窗 */}
+      {/* Cart popup */}
       <Popup
         visible={cartVisible}
         onMaskClick={() => setCartVisible(false)}
@@ -902,7 +902,7 @@ const Home = () => {
         </div>
       </Popup>
 
-      {/* 菜品详情弹窗 */}
+      {/* Dish detail popup */}
       <Popup
         visible={detailVisible}
         onMaskClick={() => setDetailVisible(false)}

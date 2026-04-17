@@ -33,13 +33,13 @@ const Order = () => {
   const [addressPopupVisible, setAddressPopupVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addressLoading, setAddressLoading] = useState(false);
-  const [shopStatus, setShopStatus] = useState<number>(1); // 1:营业中 0:休息中
+  const [shopStatus, setShopStatus] = useState<number>(1); // 1: Open, 0: Closed
   const isShopOpen = shopStatus === 1;
 
-  // 请求数据对象
+  // Request data object
   const [cartReqData, setCartReqData] = useState({});
 
-  // 加载购物车
+  // Load cart
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -58,7 +58,7 @@ const Order = () => {
     fetchCart();
   }, [cartReqData]);
 
-  // 加载默认地址
+  // Load default address
   useEffect(() => {
     const fetchDefaultAddress = async () => {
       setAddressLoading(true);
@@ -68,7 +68,7 @@ const Order = () => {
           setSelectedAddress(res.data);
         }
       } catch {
-        // 没有默认地址，静默处理
+        // No default address, handle silently
       } finally {
         setAddressLoading(false);
       }
@@ -76,7 +76,7 @@ const Order = () => {
     fetchDefaultAddress();
   }, []);
 
-  // 加载店铺状态
+  // Load shop status
   useEffect(() => {
     const fetchShopInfo = async () => {
       try {
@@ -92,7 +92,7 @@ const Order = () => {
     fetchShopInfo();
   }, []);
 
-  // 加载地址列表（打开选择弹窗时）
+  // Load address list (when opening selection popup)
   const loadAddressList = async () => {
     try {
       const res = await getAddressListAPI();
@@ -182,9 +182,9 @@ const Order = () => {
     try {
       const res = await submitOrderAPI({
         addressBookId: selectedAddress.id,
-        payMethod: 1, // 默认微信支付
-        deliveryStatus: 1, // 立即送出
-        tablewareStatus: 1, // 按餐量提供
+        payMethod: 1, // Default WeChat payment
+        deliveryStatus: 1, // Deliver immediately
+        tablewareStatus: 1, // Provide by meal count
         tablewareNumber: 0,
         packAmount: 0,
         amount: totalPrice,
@@ -224,7 +224,7 @@ const Order = () => {
         Confirm Order
       </NavBar>
 
-      {/* 收货地址 */}
+      {/* Delivery address */}
       <Card
         style={{ margin: 12, cursor: "pointer" }}
         onClick={handleOpenAddressPopup}
@@ -268,7 +268,7 @@ const Order = () => {
         </div>
       </Card>
 
-      {/* 商品列表 */}
+      {/* Item list */}
       <Card style={{ margin: 12 }}>
         <div style={{ fontWeight: "bold", marginBottom: 12, fontSize: 16 }}>Item List</div>
         <List style={{ "--border-top": "none", "--border-bottom": "none" }}>
@@ -327,7 +327,7 @@ const Order = () => {
         </List>
       </Card>
 
-      {/* 底部提交栏 */}
+      {/* Bottom submit bar */}
       <div
         style={{
           position: "fixed",
@@ -362,7 +362,7 @@ const Order = () => {
         </Button>
       </div>
 
-      {/* 地址选择弹窗 */}
+      {/* Address selection popup */}
       <Popup
         visible={addressPopupVisible}
         onMaskClick={() => setAddressPopupVisible(false)}

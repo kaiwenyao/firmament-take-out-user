@@ -1,14 +1,14 @@
 /**
- * 错误处理工具函数
+ * Error handling utility functions
  */
 
 /**
- * 从错误对象中提取错误消息
- * @param error 错误对象
- * @param fallbackMessage 默认错误消息
- * @returns 错误消息字符串
+ * Extract error message from an error object
+ * @param error Error object
+ * @param fallbackMessage Default error message
+ * @returns Error message string
  */
-export function getErrorMessage(error: unknown, fallbackMessage = "操作失败"): string {
+export function getErrorMessage(error: unknown, fallbackMessage = "Operation failed"): string {
   if (typeof error === "string") {
     return error;
   }
