@@ -15,13 +15,13 @@ const Pay = () => {
   const [orderNumber, setOrderNumber] = useState<string | null>(
     searchParams.get("orderNumber")
   );
-  const [payMethod, setPayMethod] = useState<number>(1); // 1:微信 2:支付宝
+  const [payMethod, setPayMethod] = useState<number>(1); // 1: WeChat, 2: Alipay
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
   const [orderLoading, setOrderLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState<string | null>(null);
 
-  // 加载订单详情
+  // Load order details
   useEffect(() => {
     const fetchOrderDetail = async () => {
       if (!orderNumber) {
@@ -53,7 +53,7 @@ const Pay = () => {
     fetchOrderDetail();
   }, [orderNumber, navigate]);
 
-  // 处理支付成功后的延迟跳转
+  // Handle delayed redirect after payment success
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | null = null;
 

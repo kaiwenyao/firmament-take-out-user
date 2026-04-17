@@ -31,21 +31,21 @@ const My = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [userInfoLoading, setUserInfoLoading] = useState(false);
 
-  // 请求数据对象
+  // Request data object
   const [reqData, setReqData] = useState({
     page: 1,
     pageSize: 10,
   });
 
   useEffect(() => {
-    // 检查是否已登录
+    // Check if logged in
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login", { replace: true });
       return;
     }
 
-    // 获取用户信息
+    // Get user info
     const fetchUserInfo = async () => {
       setUserInfoLoading(true);
       try {
@@ -58,7 +58,7 @@ const My = () => {
         }
       } catch (error: unknown) {
         const errorMessage = getErrorMessage(error, "Failed to load user info");
-        // 如果是401错误，响应拦截器已经处理了跳转，这里不需要额外处理
+        // If 401 error, response interceptor already handled redirect, no extra handling needed
         if (!errorMessage.includes("sign in")) {
           toast.error(errorMessage);
         }
@@ -105,9 +105,9 @@ const My = () => {
 
   const handleOneMoreOrder = async (orderNumber: string) => {
     try {
-      // 先清空购物车
+      // Clear cart first
       await delShoppingCartAPI();
-      // 再来一单
+      // Order again
       await repetitionOrderAPI(orderNumber);
       toast.success("Added to cart");
       navigate("/home");
@@ -173,7 +173,7 @@ const My = () => {
         Profile
       </NavBar>
 
-      {/* 用户信息卡片 */}
+      {/* User info card */}
       <Card style={{ margin: 12, marginBottom: 12 }}>
         {userInfoLoading ? (
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -201,7 +201,7 @@ const My = () => {
         )}
       </Card>
 
-      {/* 功能菜单 */}
+      {/* Function menu */}
       <List style={{ marginBottom: 12 }}>
         <List.Item
           arrow
@@ -225,7 +225,7 @@ const My = () => {
         </List.Item>
       </List>
 
-      {/* 最近订单 */}
+      {/* Recent orders */}
       <div style={{ padding: "0 12px 20px" }}>
         <div style={{ fontWeight: "bold", marginBottom: 12, fontSize: 16 }}>
           Recent Orders
@@ -283,7 +283,7 @@ const My = () => {
                     ¥{order.amount?.toFixed(2)}
                   </div>
                   <div style={{ display: "flex", gap: 8 }}>
-                    {/* 待支付状态显示支付按钮 */}
+                    {/* Show payment button for pending payment status */}
                     {order.status === 1 && (
                       <Button
                         size="small"

@@ -119,14 +119,14 @@
   body {
     @apply bg-background text-foreground;
   }
-  /* 排除 antd-mobile 组件，避免样式冲突 */
+  /* Exclude antd-mobile components to avoid style conflicts */
   .adm-button,
   .adm-button * {
     border-color: inherit;
   }
 }
 
-/* 防止浏览器自动填充覆盖层导致的错误 */
+/* Prevent errors from browser autofill overlay */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -135,7 +135,7 @@ input:-webkit-autofill:active {
   box-shadow: 0 0 0 30px white inset !important;
 }
 
-/* 防止自动填充覆盖层插入到 DOM */
+/* Prevent autofill overlay from inserting into DOM */
 input[type="password"],
 input[type="tel"],
 input[type="text"] {
@@ -143,14 +143,14 @@ input[type="text"] {
   z-index: 1;
 }
 
-/* 修复 antd-mobile 按钮文字不显示的问题 */
-/* 重置 Tailwind 全局样式对按钮的影响 */
+/* Fix antd-mobile button text not displaying */
+/* Reset Tailwind global styles affecting buttons */
 .adm-button {
   color: unset !important;
   font-size: 14px !important;
 }
 
-/* 确保按钮文字容器可见 */
+/* Ensure button text container is visible */
 .adm-button-text {
   display: inline-block !important;
   opacity: 1 !important;
@@ -158,15 +158,15 @@ input[type="text"] {
   color: unset !important;
 }
 
-/* 确保按钮内所有内容可见 */
+/* Ensure all content inside buttons is visible */
 .adm-button > * {
   opacity: 1 !important;
   visibility: visible !important;
   color: unset !important;
 }
 
-/* 强制所有按钮使用实心填充（有背景色），而不是透明或轮廓 */
-/* 默认按钮使用主色填充 */
+/* Force all buttons to use solid fill (with background), not transparent or outline */
+/* Default buttons use primary color fill */
 .adm-button {
   background-color: var(--adm-color-primary, #1677ff) !important;
   border-color: var(--adm-color-primary, #1677ff) !important;
@@ -177,7 +177,7 @@ input[type="text"] {
   color: var(--adm-color-white, #ffffff) !important;
 }
 
-/* 修复轮廓和透明按钮 - 改为实心填充 */
+/* Fix outline and transparent buttons - change to solid fill */
 .adm-button-fill-outline,
 .adm-button-fill-none {
   background-color: var(--adm-color-primary, #1677ff) !important;
@@ -190,7 +190,7 @@ input[type="text"] {
   color: var(--adm-color-white, #ffffff) !important;
 }
 
-/* 修复实心填充按钮的文字颜色 */
+/* Fix solid fill button text color */
 .adm-button-fill-solid {
   color: var(--adm-color-white, #ffffff) !important;
 }
@@ -199,7 +199,7 @@ input[type="text"] {
   color: var(--adm-color-white, #ffffff) !important;
 }
 
-/* 修复主色按钮 - 确保有背景色填充 */
+/* Fix primary color buttons - ensure background fill */
 .adm-button-color-primary {
   background-color: var(--adm-color-primary, #1677ff) !important;
   border-color: var(--adm-color-primary, #1677ff) !important;
@@ -210,7 +210,7 @@ input[type="text"] {
   color: var(--adm-color-white, #ffffff) !important;
 }
 
-/* 修复危险色按钮 - 确保有背景色填充 */
+/* Fix danger color buttons - ensure background fill */
 .adm-button-color-danger {
   background-color: var(--adm-color-danger, #ff4d4f) !important;
   border-color: var(--adm-color-danger, #ff4d4f) !important;

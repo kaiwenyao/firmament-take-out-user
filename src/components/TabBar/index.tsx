@@ -11,7 +11,7 @@ const TabBarComponent = () => {
   const location = useLocation();
   const { pathname } = location;
 
-  // 如果路径不在已知路径列表中，默认选中 /home
+  // If path is not in known paths list, default to /home
   const knownPaths = ["/home", "/order", "/my"];
   let activeKey = pathname;
 
@@ -42,7 +42,7 @@ const TabBarComponent = () => {
   const tabKeys = tabs.map((item) => item.key);
 
   const setRouteActive = (value?: string | null) => {
-    // 严格验证：只允许导航到预定义的 tab 路径
+    // Strict validation: only allow navigation to predefined tab paths
     if (!value || typeof value !== 'string') {
       console.warn('TabBar: Invalid navigation value:', value);
       return;

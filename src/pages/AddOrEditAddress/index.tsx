@@ -25,7 +25,7 @@ const AddOrEditAddress = () => {
   const [detailLoading, setDetailLoading] = useState(false);
   const [currentAddress, setCurrentAddress] = useState<Address | null>(null);
 
-  // 请求数据对象
+  // Request data object
   const [reqData, setReqData] = useState<{ addressId?: string }>({});
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const AddOrEditAddress = () => {
     }
   }, [id]);
 
-  // 加载地址详情
+  // Load address details
   useEffect(() => {
     if (reqData.addressId) {
       const fetchAddress = async () => {
@@ -44,7 +44,7 @@ const AddOrEditAddress = () => {
           if (res && res.code === 1 && res.data) {
             const address = res.data;
             setCurrentAddress(address);
-            // 回显所有字段到表单，包括省市区信息
+            // Populate all fields in the form, including province/city/district info
             form.setFieldsValue({
               consignee: address.consignee || "",
               phone: address.phone || "",
@@ -75,7 +75,7 @@ const AddOrEditAddress = () => {
     setLoading(true);
     try {
       if (id) {
-        // 编辑模式：使用完整的地址信息
+        // Edit mode: use complete address info
         if (!currentAddress) {
           toast.error("Failed to load address, please refresh and try again");
           setLoading(false);
@@ -85,7 +85,7 @@ const AddOrEditAddress = () => {
         const params: Partial<Address> = {
           ...values,
           id: id,
-          // 保留原有的省市区编码和名称
+          // Preserve original province/city/district codes and names
           provinceCode: currentAddress.provinceCode || "",
           provinceName: currentAddress.provinceName || "",
           cityCode: currentAddress.cityCode || "",
@@ -102,7 +102,7 @@ const AddOrEditAddress = () => {
           toast.error(res?.msg || "Failed to update");
         }
       } else {
-        // 新增模式：使用空值
+        // Add mode: use empty values
         const params: Partial<Address> = {
           ...values,
           provinceCode: "",
@@ -131,16 +131,16 @@ const AddOrEditAddress = () => {
 
   const handleFormSubmit = async () => {
     try {
-      // 先验证表单
+      // Validate form first
       const values = await form.validateFields();
-      // 验证通过后提交
+      // Submit after validation passes
       await handleSubmit(values);
     } catch (error: unknown) {
-      // 验证失败时，antd-mobile 会抛出错误，这里不需要额外处理
+      // On validation failure, antd-mobile throws an error, no extra handling needed
       if (error && typeof error === 'object' && 'errorFields' in error) {
         const formError = error as { errorFields?: Array<{ errors?: string[] }> };
         if (formError.errorFields) {
-          // 表单验证失败
+          // Form validation failed
           const firstError = formError.errorFields[0];
           if (firstError?.errors?.[0]) {
             toast.error(firstError.errors[0]);

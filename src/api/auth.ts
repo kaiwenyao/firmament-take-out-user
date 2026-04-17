@@ -1,21 +1,21 @@
 import request from "./request";
 import type { ApiResponse } from "./request";
 
-// 用户登录请求参数
+// User login request parameters
 export interface UserLoginDTO {
   phone: string;
   password: string;
 }
 
-// 用户登录响应数据
+// User login response data
 export interface UserLoginVO {
-  id: string; // ID为string类型
+  id: string; // ID is string type
   token: string;
 }
 
-// 用户信息
+// User info
 export interface UserInfo {
-  id: string; // ID为string类型
+  id: string; // ID is string type
   phone: string;
   name?: string;
   avatar?: string;
@@ -23,9 +23,9 @@ export interface UserInfo {
 }
 
 /**
- * 用户登录（手机号+密码）
- * @param params 登录参数
- * @returns 登录响应数据
+ * User login (phone + password)
+ * @param params Login parameters
+ * @returns Login response data
  */
 export const userLoginAPI = async (
   params: UserLoginDTO
@@ -34,8 +34,8 @@ export const userLoginAPI = async (
 };
 
 /**
- * 获取当前登录用户信息
- * @returns 用户信息
+ * Get current logged-in user info
+ * @returns User info
  */
 export const getUserInfoAPI = async (): Promise<ApiResponse<UserInfo>> => {
   return request.get("/user/info");

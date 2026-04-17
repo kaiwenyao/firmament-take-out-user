@@ -11,7 +11,7 @@ const OrderDetail = () => {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // 请求数据对象
+  // Request data object
   const [reqData, setReqData] = useState<{ orderNumber?: string }>({});
 
   useEffect(() => {
@@ -221,7 +221,7 @@ const OrderDetail = () => {
         </div>
       </Card>
 
-      {/* 待支付订单显示底部支付栏 */}
+      {/* Show bottom payment bar for pending payment orders */}
       {order.status === 1 && (
         <div
           style={{

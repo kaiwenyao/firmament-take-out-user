@@ -1,11 +1,11 @@
 /**
- * 格式化工具函数
+ * Formatting utility functions
  */
 
 /**
- * 脱敏手机号，隐藏中间4位
- * @param phone 手机号
- * @returns 脱敏后的手机号，如：138****5678
+ * Mask phone number, hiding the middle 4 digits
+ * @param phone Phone number
+ * @returns Masked phone number, e.g., 138****5678
  */
 export function maskPhone(phone: string): string {
   if (!phone || phone.length !== 11) {
@@ -15,9 +15,9 @@ export function maskPhone(phone: string): string {
 }
 
 /**
- * 脱敏身份证号，只显示前6位和后4位
- * @param idNumber 身份证号
- * @returns 脱敏后的身份证号
+ * Mask ID number, showing only the first 6 and last 4 digits
+ * @param idNumber ID number
+ * @returns Masked ID number
  */
 export function maskIdNumber(idNumber: string): string {
   if (!idNumber || idNumber.length < 10) {

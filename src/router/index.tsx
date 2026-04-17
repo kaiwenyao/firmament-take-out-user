@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 
-// 使用 React Router 的 lazy 属性实现真正的路由级懒加载
-// 这样组件只在路由被匹配时才会加载，而不是在路由器创建时
+// Use React Router's lazy property for true route-level lazy loading
+// This way components are only loaded when the route is matched, not when the router is created
 const router = createBrowserRouter([
   {
     path: "/login",
