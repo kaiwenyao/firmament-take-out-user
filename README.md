@@ -1,5 +1,11 @@
 # 🍜 Firmament Takeout - User Frontend
 
+[![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF?logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4.0-06B6D4?logo=tailwindcss)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 **Firmament Takeout** is a mobile-first food delivery web application built with React 19, TypeScript, and Vite. Browse restaurants, manage your cart, place orders, and track deliveries — all from your phone. ✨
 
 [中文版](./README_EN.md) | [Live Demo](https://firmament-user.kaiwen.dev)
