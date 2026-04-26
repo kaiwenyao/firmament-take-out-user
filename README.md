@@ -8,20 +8,20 @@
 
 ## 📋 Table of Contents
 
-- [✨ Features](#features)
-- [🎭 Live Demo](#live-demo)
-- [🛠️ Tech Stack](#tech-stack)
-- [🚀 Getting Started](#getting-started)
-  - [📋 Prerequisites](#prerequisites)
-  - [🔧 Installation](#installation)
-  - [⚙️ Configuration](#configuration)
-  - [📜 Available Scripts](#available-scripts)
-- [📂 Project Structure](#project-structure)
-- [🐳 Deployment](#deployment)
-- [🧪 Testing](#testing)
-- [🤝 Contributing](#contributing)
-- [📝 License](#license)
-- [📧 Contact](#contact)
+- [✨ Features](#-features)
+- [🎭 Live Demo](#-live-demo)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🚀 Getting Started](#-getting-started)
+  - [📋 Prerequisites](#-prerequisites)
+  - [🔧 Installation](#-installation)
+  - [⚙️ Configuration](#️-configuration)
+  - [📜 Available Scripts](#-available-scripts)
+- [📂 Project Structure](#-project-structure)
+- [🐳 Deployment](#-deployment)
+- [🧪 Testing](#-testing)
+- [🤝 Contributing](#-contributing)
+- [📝 License](#-license)
+- [📧 Contact](#-contact)
 
 ---
 
