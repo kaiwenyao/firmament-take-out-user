@@ -1,74 +1,123 @@
-# 苍穹外卖 - 用户端
+# 🍜 苍穹外卖 - 用户端
 
-## 演示网站
+**苍穹外卖** 是一款基于 React 19、TypeScript 和 Vite 构建的移动端外卖 Web 应用。浏览餐厅、管理购物车、下单支付、追踪订单 — 一切尽在手机端。✨
 
-**访问地址：** <https://firmament-user.kaiwen.dev>
+[English](./README.md) | [在线演示](https://firmament-user.kaiwen.dev)
 
-### 测试账号
+---
 
-* **账号：** 13333333333
-* **密码：** 123456
+## 📋 目录
 
-## 技术栈
+- [✨ 功能特性](#功能特性)
+- [🎭 在线演示](#在线演示)
+- [🛠️ 技术栈](#技术栈)
+- [🚀 快速开始](#快速开始)
+  - [📋 前置要求](#前置要求)
+  - [🔧 安装](#安装)
+  - [⚙️ 配置](#配置)
+  - [📜 可用命令](#可用命令)
+- [📂 项目结构](#项目结构)
+- [🐳 部署](#部署)
+- [🧪 测试](#测试)
+- [🤝 贡献指南](#贡献指南)
+- [📝 许可证](#许可证)
+- [📧 联系方式](#联系方式)
 
-### 核心框架
+---
 
-* **React** ^19.2.0 - 用于构建用户界面的 JavaScript 库（最新稳定版）
-* **React DOM** ^19.2.0 - React 的 DOM 渲染库
-* **TypeScript** \~5.9.3 - JavaScript 的超集，提供类型安全
-* **Vite** ^7.2.4 - 下一代前端构建工具，提供快速的开发体验
+## ✨ 功能特性
 
-### React 19 兼容性说明
+- 🍔 **浏览发现** — 首页按分类和餐厅浏览美食
+- 🛒 **购物车** — 结账前添加、移除和管理商品
+- 🔐 **用户认证** — 手机号和密码安全登录
+- 📍 **地址管理** — 新增、编辑和删除配送地址
+- 💳 **下单支付** — 无缝下单和支付流程
+- 📦 **订单追踪** — 查看订单历史和配送状态
+- 👤 **个人中心** — 管理个人信息和偏好设置
+- 📱 **移动端优先** — 为手机屏幕优化的响应式界面
 
-项目使用 React 19.2.0，并通过以下方式确保与 antd-mobile 的兼容性：
+---
 
-* **antd-mobile 兼容配置**：在 `src/main.tsx` 中使用 `unstableSetRender` API 来适配 React 19 的渲染方式
-* **兼容方式**：由于 React 19 调整了 react-dom 的导出方式，antd-mobile v5 需要使用兼容配置才能正常工作
-* **版本要求**：antd-mobile 版本 >= 5.40.0（当前使用 5.42.3）
-* **未来计划**：该兼容方式将在 antd-mobile 的下一个 major 版本中被移除，届时将原生支持 React 19
+## 🎭 在线演示
 
-### 路由管理
+访问在线演示地址：**[firmament-user.kaiwen.dev](https://firmament-user.kaiwen.dev)**
 
-* **React Router DOM** ^6.28.0 - 用于单页应用的路由管理
+**测试账号：**
 
-### UI 组件库
+| 字段 | 值 |
+|------|-----|
+| 📱 手机号 | `13333333333` |
+| 🔒 密码 | `123456` |
 
-* **Ant Design Mobile** ^5.42.3 - 移动端 UI 组件库（使用 `unstableSetRender` 兼容 React 19）
-* **Ant Design Mobile Icons** ^0.3.0 - 移动端图标库
-* **shadcn/ui** \- 基于 Radix UI 和 Tailwind CSS 的可复用组件系统
-  * 使用的组件：Button, Card, Input, Label, Sonner
-  * 基于 **Radix UI** 无样式、可访问的 UI 组件库
-    * @radix-ui/react-label ^2.1.8 - 标签组件
-    * @radix-ui/react-slot ^1.2.4 - 插槽组件
-    * @radix-ui/react-toast ^1.2.15 - Toast 通知组件
+---
 
-### 样式方案
+## 🛠️ 技术栈
 
-* **Tailwind CSS** ^3.4.0 - 实用优先的 CSS 框架
-* **tailwindcss-animate** ^1.0.7 - Tailwind CSS 动画插件
-* **PostCSS** ^8.5.6 - CSS 后处理器
-* **Autoprefixer** ^10.4.23 - 自动添加 CSS 浏览器前缀
+| 类别 | 技术 |
+|------|------|
+| **框架** | React 19 · TypeScript · Vite 7 |
+| **样式** | Tailwind CSS · antd-mobile · shadcn/ui |
+| **路由** | React Router DOM 6 |
+| **HTTP** | Axios |
+| **部署** | Docker · nginx |
 
-### HTTP 请求
+> **说明：** 本项目使用 React 19，通过 `src/main.tsx` 中的 `unstableSetRender` 配置了 `antd-mobile` 的兼容性。需要 antd-mobile >= 5.40.0。
 
-* **Axios** ^1.7.9 - 基于 Promise 的 HTTP 客户端
+---
 
-### 工具库
+## 🚀 快速开始
 
-* **class-variance-authority** ^0.7.1 - 用于管理组件变体的工具
-* **clsx** ^2.1.1 - 用于条件性地构造 className 字符串
-* **tailwind-merge** ^3.4.0 - 智能合并 Tailwind CSS 类名
-* **lucide-react** ^0.562.0 - 图标库
-* **next-themes** ^0.4.6 - 主题切换工具
-* **sonner** ^2.0.7 - Toast 通知组件
+### 📋 前置要求
 
-### 开发工具
+- **Node.js** >= 18.0.0（推荐使用 24.x LTS 版本）
+- **npm** >= 9.0.0
 
-* **ESLint** ^9.39.1 - JavaScript/TypeScript 代码检查工具
-* **TypeScript ESLint** ^8.46.4 - TypeScript 的 ESLint 插件
-* **@vitejs/plugin-react** ^5.1.2 - Vite 的 React 插件（支持 React 19）
+检查版本：
 
-## 项目结构
+```bash
+node --version && npm --version
+```
+
+### 🔧 安装
+
+```bash
+# 克隆仓库
+git clone https://github.com/kaiwenyao/firmament-take-out-user.git
+cd firmament-take-out-user
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+启动成功后，在浏览器中访问 `http://localhost:5173`
+
+### ⚙️ 配置
+
+**开发环境：** Vite 开发服务器会自动代理 API 请求，无需额外配置 — 对 `/api` 的请求会转发到 `http://localhost:8080/user`（配置在 `vite.config.ts` 中）。
+
+**生产环境（Docker）：** 通过环境变量配置：
+
+```bash
+FIRMAMENT_SERVER_HOST=your-backend-host
+FIRMAMENT_SERVER_PORT=your-backend-port
+```
+
+### 📜 可用命令
+
+| 命令 | 说明 |
+|------|------|
+| `npm run dev` | 启动开发服务器 |
+| `npm run dev-host` | 启动开发服务器（允许外部访问） |
+| `npm run build` | 构建生产版本 |
+| `npm run preview` | 预览生产构建 |
+| `npm run lint` | 运行 ESLint |
+
+---
+
+## 📂 项目结构
 
 ```
 user-front-react/
@@ -79,66 +128,20 @@ user-front-react/
 │   ├── router/       # 路由配置
 │   ├── lib/          # 工具函数
 │   └── assets/       # 静态资源
-├── public/           # 公共静态文件
-└── package.json      # 项目依赖配置
-
+├── deploy/
+│   └── nginx/        # nginx 配置和启动脚本
+├── Dockerfile        # 多阶段 Docker 构建
+├── Jenkinsfile       # CI/CD 流水线
+└── package.json      # 项目依赖
 ```
 
-## 前置要求
+---
 
-在开始之前，请确保你的本地环境已安装以下依赖：
+## 🐳 部署
 
-* **Node.js** \>= 18.0.0（推荐使用 Node.js 24.x LTS 版本）
-* **npm** \>= 9.0.0（通常随 Node.js 一起安装）
+### Docker（推荐）
 
-你可以通过以下命令检查版本：
-
-```bash
-node --version
-npm --version
-```
-
-## 本地调试
-
-按照以下步骤在本地运行项目：
-
-```bash
-# 1. 安装依赖
-npm install
-
-# 2. 启动开发服务器
-npm run dev
-```
-
-启动成功后，在浏览器中访问 `http://localhost:5173` 即可查看应用。
-
-### 其他开发命令
-
-```bash
-# 启动开发服务器（允许外部访问）
-npm run dev-host
-
-# 构建生产版本
-npm run build
-
-# 预览生产构建
-npm run preview
-
-# 代码检查
-npm run lint
-```
-
-## 部署
-
-项目使用 Docker 容器化部署。
-
-### 部署文件
-
-* **Dockerfile**：多阶段构建，使用 nginx 提供静态文件服务
-* **deploy/nginx/user.conf.tpl**：nginx 配置模板，支持环境变量配置后端地址
-* **deploy/nginx/docker-entrypoint.d/99-envsubst.sh**：容器启动时替换环境变量
-
-### 手动部署
+多阶段构建，使用 nginx：
 
 ```bash
 # 构建镜像
@@ -153,3 +156,62 @@ docker run -d \
   -e FIRMAMENT_SERVER_PORT=your-backend-port \
   firmament-user:latest
 ```
+
+**环境变量：**
+
+| 变量 | 说明 |
+|------|------|
+| `FIRMAMENT_SERVER_HOST` | 后端服务器地址 |
+| `FIRMAMENT_SERVER_PORT` | 后端服务器端口 |
+
+### 部署文件
+
+- **Dockerfile** — 多阶段构建，使用 nginx
+- **deploy/nginx/user.conf.tpl** — nginx 配置模板
+- **deploy/nginx/docker-entrypoint.d/99-envsubst.sh** — 启动时替换环境变量
+
+---
+
+## 🧪 测试
+
+使用 ESLint 运行代码质量检查：
+
+```bash
+npm run lint
+```
+
+> **说明：** 本项目目前使用 ESLint 进行代码质量检查。单元测试和集成测试计划在后续版本中添加。
+
+---
+
+## 🤝 贡献指南
+
+欢迎贡献！请按以下步骤操作：
+
+1. **Fork** 本仓库
+2. **创建** 功能分支：`git checkout -b feature/amazing-feature`
+3. **提交** 更改：`git commit -m "Add amazing feature"`
+4. **推送** 到分支：`git push origin feature/amazing-feature`
+5. **提交** Pull Request
+
+提交前请确保代码通过 `npm run lint` 和 `npm run build`。
+
+---
+
+## 📝 许可证
+
+本项目基于 [MIT 许可证](./LICENSE) 授权。
+
+---
+
+## 📧 联系方式
+
+**Kaiwen Yao** — [@kaiwenyao](https://github.com/kaiwenyao)
+
+项目地址：[https://github.com/kaiwenyao/firmament-take-out-user](https://github.com/kaiwenyao/firmament-take-out-user)
+
+---
+
+由 [Kaiwen Yao](https://github.com/kaiwenyao) 用 ❤️ 制作。编码愉快！🎉
+
+

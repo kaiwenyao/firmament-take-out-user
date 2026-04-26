@@ -214,29 +214,4 @@ Project Link: [https://github.com/kaiwenyao/firmament-take-out-user](https://git
 
 Made with ❤️ by [Kaiwen Yao](https://github.com/kaiwenyao). Happy coding! 🎉
 
----
 
-## 🎨 Emoticon Guide
-
-Emoticons used in this README and their meanings:
-
-| Emoji | Meaning | Usage |
-|-------|---------|-------|
-| 🍜 | Noodles | Food / project identity |
-| ✨ | Sparkles | Features / highlights |
-| 🎭 | Theater masks | Live demo |
-| 🛠️ | Tools | Tech stack |
-| 🚀 | Rocket | Getting started |
-| 📋 | Clipboard | Prerequisites / TOC |
-| 🔧 | Wrench | Installation |
-| ⚙️ | Gear | Configuration |
-| 📜 | Scroll | Scripts / commands |
-| 📂 | Folder | Project structure |
-| 🐳 | Whale | Docker / deployment |
-| 🧪 | Test tube | Testing |
-| 🤝 | Handshake | Contributing |
-| 📝 | Memo | License |
-| 📧 | Email | Contact |
-| ❤️ | Heart | Footer / appreciation |
-
-Check full emoji cheatsheet: [Emoji Cheatsheet](https://github.com/ikatyang/emoji-cheat-sheet)
