@@ -1,15 +1,26 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+// Minimal shapes matching how request.ts uses the axios interceptor handlers.
+type AxiosConfig = { headers: Record<string, unknown> };
+type ApiResponse = { data: { code: number; data?: unknown; msg?: string } };
+type ApiError = {
+  message?: string;
+  response?: { status: number; data?: { msg?: string } };
+};
+type RequestHandler = (config: AxiosConfig) => AxiosConfig;
+type SuccessHandler = (res: ApiResponse) => unknown;
+type ErrorHandler = (err: ApiError) => unknown;
+
 const mockState = vi.hoisted(() => {
-  const fakeInstance: any = {
+  const fakeInstance = {
     interceptors: {
       request: {
-        use: (fn: any) => {
+        use: (fn: RequestHandler) => {
           mockState.requestHandler = fn;
         },
       },
       response: {
-        use: (ok: any, err: any) => {
+        use: (ok: SuccessHandler, err: ErrorHandler) => {
           mockState.responseResolveHandler = ok;
           mockState.responseRejectHandler = err;
         },
@@ -19,9 +30,9 @@ const mockState = vi.hoisted(() => {
 
   return {
     create: vi.fn(() => fakeInstance),
-    requestHandler: undefined as ((c: any) => any) | undefined,
-    responseResolveHandler: undefined as ((r: any) => any) | undefined,
-    responseRejectHandler: undefined as ((e: any) => any) | undefined,
+    requestHandler: undefined as RequestHandler | undefined,
+    responseResolveHandler: undefined as SuccessHandler | undefined,
+    responseRejectHandler: undefined as ErrorHandler | undefined,
   };
 });
 

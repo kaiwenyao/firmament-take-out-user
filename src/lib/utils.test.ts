@@ -7,7 +7,8 @@ describe("cn (class merge helper)", () => {
   });
 
   it("handles conditional values (falsy values are ignored)", () => {
-    expect(cn("a", false && "b", undefined, null, "c")).toBe("a c");
+    const falsy = false;
+    expect(cn("a", falsy && "b", undefined, null, "c")).toBe("a c");
   });
 
   it("handles empty / no arguments", () => {

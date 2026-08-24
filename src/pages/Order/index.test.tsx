@@ -278,7 +278,6 @@ describe("Order page", () => {
 
   it("navigates back on the navbar back button", async () => {
     setupHappy();
-    const user = userEvent.setup();
     render(<Order />);
     await waitFor(() => expect(screen.getByText("Burger")).toBeInTheDocument());
     fireEvent.click(document.querySelector(".adm-nav-bar-back"));
