@@ -59,6 +59,16 @@ const flavoredDish = {
   dishNumber: undefined as number | undefined,
 };
 
+const jsonFlavoredDish = {
+  id: "d3",
+  name: "JSON Flavored Rice",
+  price: 25,
+  image: "",
+  description: "Rice",
+  flavors: [{ name: "Toppings", value: '["egg","ham"]' }],
+  dishNumber: undefined as number | undefined,
+};
+
 const setmeal = {
   id: "s1",
   name: "Family Meal",
@@ -143,21 +153,17 @@ describe("Home page", () => {
 
   it("decreases a dish quantity when - is clicked", async () => {
     localStorage.setItem("token", "tok");
-    const cartItem = { id: "cart1", dishId: "d1", setmealId: "", name: "Burger", number: 2, amount: 15, dishFlavor: "" };
+    // Provide dishNumber directly so the minus button renders deterministically.
     mockGet.mockImplementation((url: string, config?: { params?: Record<string, unknown> }) => {
       const params = config?.params;
       if (url === "/category/list") {
         if (params?.type === 1) return Promise.resolve({ code: 1, msg: "ok", data: [dishCat] });
         if (params?.type === 2) return Promise.resolve({ code: 1, msg: "ok", data: [setmealCat] });
       }
-      if (url === "/dish/list") return Promise.resolve({ code: 1, msg: "ok", data: [dish] });
+      if (url === "/dish/list") return Promise.resolve({ code: 1, msg: "ok", data: [{ ...dish, dishNumber: 2 }] });
       if (url === "/setmeal/list") return Promise.resolve({ code: 1, msg: "ok", data: [] });
-      // Delay cart so it loads after the dish list, letting the merge populate dishNumber.
-      if (url === "/shoppingCart/list") {
-        return new Promise((resolve) =>
-          setTimeout(() => resolve({ code: 1, msg: "ok", data: [cartItem] }), 50)
-        );
-      }
+      if (url === "/shoppingCart/list")
+        return Promise.resolve({ code: 1, msg: "ok", data: [{ id: "cart1", dishId: "d1", setmealId: "", name: "Burger", number: 2, amount: 15, dishFlavor: "" }] });
       if (url === "/shop/status") return Promise.resolve({ code: 1, msg: "ok", data: 1 });
       return Promise.resolve({ code: 1, msg: "ok", data: null });
     });
@@ -168,6 +174,10 @@ describe("Home page", () => {
     await user.click(screen.getByRole("button", { name: "-" }));
     await waitFor(() =>
       expect(mockPost).toHaveBeenCalledWith("/shoppingCart/sub", { dishId: "d1", dishFlavor: "" })
+    );
+    // wait for the cart reload to run the merge so the quantity updates deterministically
+    await waitFor(() =>
+      expect(mockGet.mock.calls.filter((c) => c[0] === "/shoppingCart/list").length).toBeGreaterThanOrEqual(2)
     );
     expect(mockToastSuccess).toHaveBeenCalledWith("Removed");
   });
@@ -257,6 +267,30 @@ describe("Home page", () => {
     );
   });
 
+  it("renders flavor options when the flavor value is a JSON array", async () => {
+    localStorage.setItem("token", "tok");
+    mockGet.mockImplementation((url: string, config?: { params?: Record<string, unknown> }) => {
+      const params = config?.params;
+      if (url === "/category/list") {
+        if (params?.type === 1) return Promise.resolve({ code: 1, msg: "ok", data: [dishCat] });
+        if (params?.type === 2) return Promise.resolve({ code: 1, msg: "ok", data: [setmealCat] });
+      }
+      if (url === "/dish/list") return Promise.resolve({ code: 1, msg: "ok", data: [jsonFlavoredDish] });
+      if (url === "/setmeal/list") return Promise.resolve({ code: 1, msg: "ok", data: [] });
+      if (url === "/shoppingCart/list") return Promise.resolve({ code: 1, msg: "ok", data: [] });
+      if (url === "/shop/status") return Promise.resolve({ code: 1, msg: "ok", data: 1 });
+      return Promise.resolve({ code: 1, msg: "ok", data: null });
+    });
+    mockPost.mockResolvedValue({ code: 1, msg: "ok" });
+    const user = userEvent.setup();
+    render(<Home />);
+    await waitFor(() => expect(screen.getByRole("button", { name: /select options/i })).toBeInTheDocument());
+    await user.click(screen.getByRole("button", { name: /select options/i }));
+    await waitFor(() => expect(screen.getByText("Toppings")).toBeInTheDocument());
+    expect(screen.getByRole("button", { name: "egg" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "ham" })).toBeInTheDocument();
+  });
+
   it("shows an empty state for a category with no items", async () => {
     mockGet.mockImplementation((url: string, config?: { params?: Record<string, unknown> }) => {
       const params = config?.params;
@@ -290,12 +324,10 @@ describe("Home page", () => {
         if (params?.type === 2) return Promise.resolve({ code: 1, msg: "ok", data: [setmealCat] });
       }
       if (url === "/dish/list") return Promise.resolve({ code: 1, msg: "ok", data: [] });
-      if (url === "/setmeal/list") return Promise.resolve({ code: 1, msg: "ok", data: [setmeal] });
-      if (url === "/shoppingCart/list") {
-        return new Promise((resolve) =>
-          setTimeout(() => resolve({ code: 1, msg: "ok", data: [cartItem] }), 50)
-        );
-      }
+      if (url === "/setmeal/list")
+        return Promise.resolve({ code: 1, msg: "ok", data: [{ ...setmeal, setmealNumber: 2 }] });
+      if (url === "/shoppingCart/list")
+        return Promise.resolve({ code: 1, msg: "ok", data: [cartItem] });
       if (url === "/shop/status") return Promise.resolve({ code: 1, msg: "ok", data: 1 });
       return Promise.resolve({ code: 1, msg: "ok", data: null });
     });
@@ -310,6 +342,10 @@ describe("Home page", () => {
     await user.click(screen.getAllByRole("button", { name: "-" })[0]);
     await waitFor(() =>
       expect(mockPost).toHaveBeenCalledWith("/shoppingCart/sub", { setmealId: "s1" })
+    );
+    // wait for the cart reload to run the setmeal merge deterministically
+    await waitFor(() =>
+      expect(mockGet.mock.calls.filter((c) => c[0] === "/shoppingCart/list").length).toBeGreaterThanOrEqual(2)
     );
     expect(mockToastSuccess).toHaveBeenCalledWith("Removed");
   });

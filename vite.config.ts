@@ -25,6 +25,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: false,
+    // Run test files sequentially: when files run in parallel, v8 coverage
+    // capture for Home's cart-merge async effects occasionally misses code
+    // under load, making the 90% thresholds flaky. Sequential runs keep the
+    // coverage report deterministic and reliably above the thresholds.
+    fileParallelism: false,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
