@@ -61,7 +61,7 @@ describe("Login page", () => {
 
   it("prefills default credentials so users can sign in directly", () => {
     render(<Login />);
-    expect(screen.getByPlaceholderText("Enter your phone number")).toHaveValue("13900000000");
+    expect(screen.getByPlaceholderText("Enter your phone number")).toHaveValue("13333333333");
     expect(screen.getByPlaceholderText("Enter your password")).toHaveValue("123456");
   });
 

@@ -172,7 +172,7 @@ const Login = () => {
         <Form
           layout="vertical"
           onFinish={onFinish}
-          initialValues={{ phone: "13900000000", password: "123456" }}
+          initialValues={{ phone: "13333333333", password: "123456" }}
           footer={
             <Button
               block
