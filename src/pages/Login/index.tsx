@@ -6,10 +6,51 @@ import { userLoginAPI } from "@/api/auth";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/error";
 
+// Wrapped so Form.Item injects its value/onChange directly into the input,
+// enabling both collection and prefill of the prefilled default password.
+const PasswordInput = ({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange?: (value: string) => void;
+}) => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  return (
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <Input
+        value={value}
+        onChange={onChange}
+        placeholder="Enter your password"
+        clearable
+        type={passwordVisible ? "text" : "password"}
+        style={{
+          "--font-size": "16px",
+          flex: 1,
+        }}
+      />
+      <div
+        style={{
+          padding: "0 8px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+        }}
+        onClick={() => setPasswordVisible(!passwordVisible)}
+      >
+        {passwordVisible ? (
+          <EyeOutline fontSize={20} color="#999" />
+        ) : (
+          <EyeInvisibleOutline fontSize={20} color="#999" />
+        )}
+      </div>
+    </div>
+  );
+};
+
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     // If already logged in, redirect to home
@@ -131,6 +172,7 @@ const Login = () => {
         <Form
           layout="vertical"
           onFinish={onFinish}
+          initialValues={{ phone: "13333333333", password: "123456" }}
           footer={
             <Button
               block
@@ -177,32 +219,7 @@ const Login = () => {
               { min: 6, message: "Password must be at least 6 characters" },
             ]}
           >
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Input
-                placeholder="Enter your password"
-                clearable
-                type={passwordVisible ? "text" : "password"}
-                style={{
-                  "--font-size": "16px",
-                  flex: 1,
-                }}
-              />
-              <div
-                style={{
-                  padding: "0 8px",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                onClick={() => setPasswordVisible(!passwordVisible)}
-              >
-                {passwordVisible ? (
-                  <EyeOutline fontSize={20} color="#999" />
-                ) : (
-                  <EyeInvisibleOutline fontSize={20} color="#999" />
-                )}
-              </div>
-            </div>
+            <PasswordInput />
           </Form.Item>
         </Form>
 

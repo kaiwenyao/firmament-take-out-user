@@ -42,8 +42,13 @@ beforeEach(() => {
 
 const fill = async (phone: string, password: string) => {
   const user = userEvent.setup();
-  await user.type(screen.getByPlaceholderText("Enter your phone number"), phone);
-  await user.type(screen.getByPlaceholderText("Enter your password"), password);
+  const phoneInput = screen.getByPlaceholderText("Enter your phone number");
+  const passwordInput = screen.getByPlaceholderText("Enter your password");
+  // The form is prefilled with default credentials, so clear before typing.
+  await user.clear(phoneInput);
+  await user.clear(passwordInput);
+  await user.type(phoneInput, phone);
+  await user.type(passwordInput, password);
   return user;
 };
 
@@ -52,6 +57,12 @@ describe("Login page", () => {
     render(<Login />);
     expect(screen.getByPlaceholderText("Enter your phone number")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Enter your password")).toBeInTheDocument();
+  });
+
+  it("prefills default credentials so users can sign in directly", () => {
+    render(<Login />);
+    expect(screen.getByPlaceholderText("Enter your phone number")).toHaveValue("13333333333");
+    expect(screen.getByPlaceholderText("Enter your password")).toHaveValue("123456");
   });
 
   it("redirects to home when a token already exists", async () => {
