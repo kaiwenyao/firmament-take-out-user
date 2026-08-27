@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Form, Input, Button, Image } from "antd-mobile";
 import { EyeInvisibleOutline, EyeOutline } from "antd-mobile-icons";
+import { Github } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { userLoginAPI } from "@/api/auth";
 import { toast } from "sonner";
@@ -253,6 +254,23 @@ const Login = () => {
           fontSize: 12,
         }}
       >
+        <a
+          href="https://github.com/kaiwenyao/firmament-take-out-user"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            marginBottom: 12,
+            color: "#666",
+            fontSize: 13,
+            textDecoration: "none",
+          }}
+        >
+          <Github size={16} />
+          <span>View on GitHub</span>
+        </a>
         <div>By signing in, you agree to our Terms of Service and Privacy Policy</div>
         <div style={{ marginTop: 8 }}>© 2024 Firmament Takeout</div>
       </div>
