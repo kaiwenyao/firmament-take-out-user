@@ -59,6 +59,17 @@ describe("Login page", () => {
     expect(screen.getByPlaceholderText("Enter your password")).toBeInTheDocument();
   });
 
+  it("renders the GitHub link", () => {
+    render(<Login />);
+    const link = screen.getByText("View on GitHub").closest("a");
+    expect(link).toHaveAttribute(
+      "href",
+      "https://github.com/kaiwenyao/firmament-take-out-user"
+    );
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  });
+
   it("prefills default credentials so users can sign in directly", () => {
     render(<Login />);
     expect(screen.getByPlaceholderText("Enter your phone number")).toHaveValue("13333333333");
