@@ -2,6 +2,10 @@
 
 **苍穹外卖** 是一款基于 React 19、TypeScript 和 Vite 构建的移动端外卖 Web 应用。浏览餐厅、管理购物车、下单支付、追踪订单 — 一切尽在手机端。✨
 
+<p align="center">
+  <img src="docs/images/user-home.png" width="300" alt="苍穹外卖 — 用户端首页"/>
+</p>
+
 [English](./README.md) | [在线演示](https://firmament-user.kaiwen.dev)
 
 ---
@@ -9,6 +13,7 @@
 ## 📋 目录
 
 - [✨ 功能特性](#功能特性)
+- [📸 界面截图](#界面截图)
 - [🎭 在线演示](#在线演示)
 - [🛠️ 技术栈](#技术栈)
 - [🚀 快速开始](#快速开始)
@@ -35,6 +40,17 @@
 - 📦 **订单追踪** — 查看订单历史和配送状态
 - 👤 **个人中心** — 管理个人信息和偏好设置
 - 📱 **移动端优先** — 为手机屏幕优化的响应式界面
+
+---
+
+## 📸 界面截图
+
+| | |
+|---|---|
+| <img src="docs/images/user-home.png" width="240"/> | <img src="docs/images/user-checkout.png" width="240"/> |
+| **用户端首页** — 按分类浏览菜单，图文并茂展示菜品、描述与价格 | **订单确认** — 下单前确认收货地址、商品清单与合计金额 |
+| <img src="docs/images/user-pay.png" width="240"/> | <img src="docs/images/user-history.png" width="240"/> |
+| **支付页** — 订单支付摘要，支持微信 / 支付宝模拟支付 | **历史订单** — 全部订单与实时状态，支持去支付 / 催单 / 再来一单 |
 
 ---
 
