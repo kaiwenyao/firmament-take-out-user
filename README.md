@@ -8,7 +8,9 @@
 
 **Firmament Takeout** is a mobile-first food delivery web application built with React 19, TypeScript, and Vite. Browse restaurants, manage your cart, place orders, and track deliveries — all from your phone. ✨
 
-![Firmament Takeout — User Home](docs/images/user-home.png)
+<p align="center">
+  <img src="docs/images/user-home.png" width="300" alt="Firmament Takeout — User Home"/>
+</p>
 
 [中文版](./README_EN.md) | [Live Demo](https://firmament-user.kaiwen.dev)
 
@@ -51,9 +53,9 @@
 
 | | |
 |---|---|
-| ![User Home](docs/images/user-home.png) | ![Order Confirmation](docs/images/user-checkout.png) |
+| <img src="docs/images/user-home.png" width="240"/> | <img src="docs/images/user-checkout.png" width="240"/> |
 | **User Home** — browse the menu by category with photos, descriptions and prices | **Order Confirmation** — delivery address, item list and total before placing the order |
-| ![Payment](docs/images/user-pay.png) | ![Order History](docs/images/user-history.png) |
+| <img src="docs/images/user-pay.png" width="240"/> | <img src="docs/images/user-history.png" width="240"/> |
 | **Payment** — order summary with mock WeChat Pay / Alipay checkout | **Order History** — every order with live status and quick actions (pay, rush, reorder) |
 
 ---
